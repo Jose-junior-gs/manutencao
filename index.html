@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,7 +20,9 @@ button,input,select,textarea{font-family:inherit}
 .nav-icon{font-size:18px}
 .content{max-width:900px;margin:0 auto;padding:20px 14px}
 .card{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;margin-bottom:16px}
-.card-header{padding:14px 18px;border-bottom:1px solid #2a2d3e;display:flex;align-items:center;gap:10px}
+.card-header{padding:14px 18px;border-bottom:1px solid #2a2d3e;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-header-left{display:flex;align-items:center;gap:10px}
+.card-header-actions{display:flex;gap:8px}
 .card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;padding:16px}
@@ -41,7 +42,9 @@ button,input,select,textarea{font-family:inherit}
 .btn-primary{background:#6c63ff;color:#fff;border:none;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:14px}
 .btn-small{background:#6c63ff;color:#fff;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px;font-weight:600}
 .btn-outline{background:none;border:1px solid #2a2d3e;color:#64748b;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:14px}
-.btn-danger{background:#ef444422;color:#ef4444;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px;font-weight:600}
+.btn-icon{background:none;border:1px solid #2a2d3e;color:#64748b;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px}
+.btn-icon:hover{border-color:#6c63ff;color:#6c63ff}
+.btn-danger-sm{background:none;border:none;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px}
 .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .section-title{font-size:20px;font-weight:700;margin-bottom:18px}
 .section-sub{font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:16px}
@@ -76,7 +79,7 @@ input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff;
 .chart-bar-wrap{margin-bottom:12px}
 .chart-bar-label{display:flex;justify-content:space-between;font-size:12px;color:#64748b;margin-bottom:4px}
 .chart-bar-bg{background:#2a2d3e;border-radius:6px;height:10px}
-.chart-bar-fill{background:#6c63ff;border-radius:6px;height:10px;transition:width .5s}
+.chart-bar-fill{background:#6c63ff;border-radius:6px;height:10px}
 .alert-banner{background:#ef444422;border:1px solid #ef444444;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
 .alert-banner-text{flex:1;font-size:13px}
 .toggle-switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
@@ -85,6 +88,7 @@ input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff;
 .toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#64748b;border-radius:50%;transition:.3s}
 input:checked+.toggle-slider{background:#6c63ff22;border:1px solid #6c63ff}
 input:checked+.toggle-slider:before{transform:translateX(20px);background:#6c63ff}
+.welcome-box{background:#1a1d27;border:1px solid #6c63ff44;border-radius:16px;padding:32px 20px;text-align:center;margin-bottom:24px}
 </style>
 </head>
 <body>
@@ -94,7 +98,7 @@ input:checked+.toggle-slider:before{transform:translateX(20px);background:#6c63f
     <div id="alertPill" style="display:none" class="alert-pill"></div>
   </div>
 </div>
-<nav class="bottom-nav" id="bottomNav">
+<nav class="bottom-nav">
   <button class="nav-btn active" data-tab="dashboard"><span class="nav-icon">⊞</span>Painel</button>
   <button class="nav-btn" data-tab="vehicles"><span class="nav-icon">🚗</span>Veiculos</button>
   <button class="nav-btn" data-tab="home"><span class="nav-icon">🏠</span>Casa</button>
@@ -105,102 +109,55 @@ input:checked+.toggle-slider:before{transform:translateX(20px);background:#6c63f
 <div class="content" id="appContent"></div>
 <div id="modalContainer"></div>
 <script>
-var DEFAULT={vehicles:[{id:1,name:"Meu Carro",model:"Informe o modelo",tasks:[
-{id:1,name:"Troca de Oleo",interval:5000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:2,name:"Filtro de Ar",interval:15000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:3,name:"Rodizio de Pneus",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:4,name:"Pastilha de Freio",interval:30000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:5,name:"Revisao Geral",interval:12,unit:"meses",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:6,name:"Alinhamento",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]}
-]}],
-home:{tasks:[
-{id:1,name:"Limpeza Caixa d Agua",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:2,name:"Limpeza Caixa de Gordura",interval:3,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:3,name:"Troca Filtro de Agua",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:4,name:"Dedetizacao",interval:12,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:5,name:"Limpeza Ar-Condicionado",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:6,name:"Revisao Eletrica",interval:24,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
-{id:7,name:"Limpeza Calhas",interval:12,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]}
-]},history:[],bills:[]};
+var DEFAULT_TASKS=[
+  {id:1,name:"Troca de Oleo",interval:5000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:2,name:"Filtro de Ar",interval:15000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:3,name:"Rodizio de Pneus",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:4,name:"Pastilha de Freio",interval:30000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:5,name:"Revisao Geral",interval:12,unit:"meses",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:6,name:"Alinhamento",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]}
+];
+var DEFAULT_HOME_TASKS=[
+  {id:1,name:"Limpeza Caixa d Agua",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:2,name:"Limpeza Caixa de Gordura",interval:3,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:3,name:"Troca Filtro de Agua",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:4,name:"Dedetizacao",interval:12,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:5,name:"Limpeza Ar-Condicionado",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:6,name:"Revisao Eletrica",interval:24,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
+  {id:7,name:"Limpeza Calhas",interval:12,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]}
+];
 
-function load(){try{var s=localStorage.getItem("mnt_pro_v5");return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT))}catch(e){return JSON.parse(JSON.stringify(DEFAULT))}}
-function save(){try{localStorage.setItem("mnt_pro_v5",JSON.stringify(D))}catch(e){}}
+function load(){try{var s=localStorage.getItem("mnt_pro_v6");return s?JSON.parse(s):{vehicles:[],home:{tasks:JSON.parse(JSON.stringify(DEFAULT_HOME_TASKS))},history:[],bills:[]}}catch(e){return{vehicles:[],home:{tasks:JSON.parse(JSON.stringify(DEFAULT_HOME_TASKS))},history:[],bills:[]};}}
+function save(){try{localStorage.setItem("mnt_pro_v6",JSON.stringify(D))}catch(e){}}
 var D=load();
 var currentTab="dashboard";
 
 function daysAgo(d){if(!d)return null;return Math.floor((Date.now()-new Date(d))/86400000)}
 function daysUntil(d){if(!d)return null;return Math.ceil((new Date(d)-Date.now())/86400000)}
-function status(t){
-  if(!t.lastDone)return"none";
-  var d=daysAgo(t.lastDone);
-  if(t.unit==="meses"){var p=(d/30)/t.interval;if(p>=1)return"over";if(p>=0.8)return"warn";}
-  return"ok";
-}
-function alarmStatus(t){
-  if(!t.alarmActive||!t.alarmDate)return null;
-  var d=daysUntil(t.alarmDate);
-  if(d<=0)return"fired";
-  if(d<=7)return"soon";
-  return"active";
-}
-function badge(t){
-  var s=status(t);
-  if(s==="none")return'<span class="badge badge-none">Nao registrado</span>';
-  var d=daysAgo(t.lastDone);
-  var l=d===0?"Hoje":d===1?"Ontem":d+"d atras";
-  if(s==="over")return'<span class="badge badge-over">Atrasado - '+l+'</span>';
-  if(s==="warn")return'<span class="badge badge-warn">Atencao - '+l+'</span>';
-  return'<span class="badge badge-ok">Em dia - '+l+'</span>';
-}
+function status(t){if(!t.lastDone)return"none";var d=daysAgo(t.lastDone);if(t.unit==="meses"){var p=(d/30)/t.interval;if(p>=1)return"over";if(p>=0.8)return"warn";}return"ok";}
+function alarmStatus(t){if(!t.alarmActive||!t.alarmDate)return null;var d=daysUntil(t.alarmDate);if(d<=0)return"fired";if(d<=7)return"soon";return"active";}
+function badge(t){var s=status(t);if(s==="none")return'<span class="badge badge-none">Nao registrado</span>';var d=daysAgo(t.lastDone);var l=d===0?"Hoje":d===1?"Ontem":d+"d atras";if(s==="over")return'<span class="badge badge-over">Atrasado - '+l+'</span>';if(s==="warn")return'<span class="badge badge-warn">Atencao - '+l+'</span>';return'<span class="badge badge-ok">Em dia - '+l+'</span>';}
 function fmt(s){if(!s)return"";var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
 function today(){return new Date().toISOString().split("T")[0]}
 function allTasks(){var r=[];D.home.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:"Casa",sec:"home"}));});D.vehicles.forEach(function(v){v.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:v.name,sec:"vehicle",vid:v.id}));});});return r;}
+function nextId(arr){return arr.length>0?Math.max.apply(null,arr.map(function(t){return t.id||0;}))+1:1;}
 
-// NOTIFICATIONS
-function requestNotifPerm(){
-  if("Notification" in window && Notification.permission==="default"){
-    Notification.requestPermission();
-  }
-}
-function scheduleNotif(title,body,dateStr){
-  if(!("Notification" in window))return;
-  if(Notification.permission!=="granted")return;
-  var ms=new Date(dateStr).getTime()-Date.now();
-  if(ms>0){setTimeout(function(){new Notification(title,{body:body,icon:"/manutencao/icon.png"});},Math.min(ms,2147483647));}
-}
-function checkAlarms(){
-  var tasks=allTasks();
-  var fired=[];
-  tasks.forEach(function(t){
-    var as=alarmStatus(t);
-    if(as==="fired"||as==="soon"){fired.push(t);}
-  });
-  return fired;
-}
+function requestNotifPerm(){if("Notification" in window&&Notification.permission==="default"){Notification.requestPermission();}}
+function scheduleNotif(title,body,dateStr){if(!("Notification" in window)||Notification.permission!=="granted")return;var ms=new Date(dateStr).getTime()-Date.now();if(ms>0)setTimeout(function(){new Notification(title,{body:body});},Math.min(ms,2147483647));}
+function checkAlarms(){return allTasks().filter(function(t){var as=alarmStatus(t);return as==="fired"||as==="soon";});}
 
 function render(){
-  var el=document.getElementById("appContent");
-  if(!el)return;
+  var el=document.getElementById("appContent");if(!el)return;
   if(currentTab==="dashboard")el.innerHTML=renderDash();
   else if(currentTab==="vehicles")el.innerHTML=renderVehicles();
   else if(currentTab==="home")el.innerHTML=renderHome();
   else if(currentTab==="bills")el.innerHTML=renderBills();
   else if(currentTab==="history")el.innerHTML=renderHistory();
   else if(currentTab==="reports")el.innerHTML=renderReports();
-  bindEvents();
-  updatePill();
+  bindEvents();updatePill();
 }
 
-function updatePill(){
-  var tasks=allTasks();
-  var n=tasks.filter(function(t){return status(t)==="over"||status(t)==="warn";}).length;
-  var alarms=checkAlarms().length;
-  var total=n+alarms;
-  var p=document.getElementById("alertPill");
-  if(!p)return;
-  if(total>0){p.style.display="";p.textContent="! "+total;}
-  else p.style.display="none";
-}
+function updatePill(){var n=allTasks().filter(function(t){return status(t)==="over"||status(t)==="warn";}).length+checkAlarms().length;var p=document.getElementById("alertPill");if(!p)return;if(n>0){p.style.display="";p.textContent="! "+n;}else p.style.display="none";}
 
 function renderDash(){
   var all=allTasks();
@@ -208,36 +165,29 @@ function renderDash(){
   var warn=all.filter(function(t){return status(t)==="warn";});
   var none=all.filter(function(t){return !t.lastDone;});
   var ok=all.filter(function(t){return t.lastDone&&status(t)==="ok";});
-  var firedAlarms=checkAlarms();
-  var alarmBanner="";
-  if(firedAlarms.length>0){
-    alarmBanner='<div class="alert-banner"><span style="font-size:24px">🔔</span><div class="alert-banner-text"><strong style="color:#ef4444">'+firedAlarms.length+' alarme(s) disparado(s)!</strong><br>'+firedAlarms.map(function(t){return t.name+" ("+t.cat+")";}).join(", ")+'</div></div>';
-  }
+  var fired=checkAlarms();
+  var banner=fired.length>0?'<div class="alert-banner"><span style="font-size:24px">🔔</span><div class="alert-banner-text"><strong style="color:#ef4444">'+fired.length+' alarme(s) disparado(s)!</strong><br>'+fired.map(function(t){return t.name;}).join(", ")+'</div></div>':"";
   var att=over.concat(warn);
-  var attHtml=att.length===0?'<div class="empty">Tudo em dia!</div>':att.map(function(t){return'<div class="task-item" style="margin-bottom:8px"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">'+t.cat+'</div></div>'+badge(t)+'</div>';}).join("");
-  return alarmBanner+'<div class="section-title">Painel Geral</div>'+
-    '<div class="stats-grid">'+
-    '<div class="stat-card"><div class="stat-value" style="color:#ef4444">'+over.length+'</div><div class="stat-label">Atrasados</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:#f59e0b">'+warn.length+'</div><div class="stat-label">Atencao</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:#64748b">'+none.length+'</div><div class="stat-label">Nao registrados</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:#22c55e">'+ok.length+'</div><div class="stat-label">Em dia</div></div>'+
-    '</div><div class="section-sub">Itens que precisam de atencao</div>'+attHtml;
+  var attHtml=att.length===0?'<div class="empty">Tudo em dia! Nenhuma manutencao pendente.</div>':att.map(function(t){return'<div class="task-item" style="margin-bottom:8px"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">'+t.cat+'</div></div>'+badge(t)+'</div>';}).join("");
+  return banner+'<div class="section-title">Painel Geral</div><div class="stats-grid"><div class="stat-card"><div class="stat-value" style="color:#ef4444">'+over.length+'</div><div class="stat-label">Atrasados</div></div><div class="stat-card"><div class="stat-value" style="color:#f59e0b">'+warn.length+'</div><div class="stat-label">Atencao</div></div><div class="stat-card"><div class="stat-value" style="color:#64748b">'+none.length+'</div><div class="stat-label">Nao registrados</div></div><div class="stat-card"><div class="stat-value" style="color:#22c55e">'+ok.length+'</div><div class="stat-label">Em dia</div></div></div><div class="section-sub">Itens que precisam de atencao</div>'+attHtml;
 }
 
 function taskItemHtml(t,sec,vid){
   var as=alarmStatus(t);
-  var alarmBadge="";
-  if(as==="fired")alarmBadge='<span class="badge badge-over">🔔 Alarme!</span>';
-  else if(as==="soon")alarmBadge='<span class="badge badge-warn">🔔 Em breve</span>';
-  else if(as==="active")alarmBadge='<span class="badge badge-alarm">🔔 '+fmt(t.alarmDate)+'</span>';
+  var alarmBadge=as==="fired"?'<span class="badge badge-over">🔔 Alarme!</span>':as==="soon"?'<span class="badge badge-warn">🔔 Em breve</span>':as==="active"?'<span class="badge badge-alarm">🔔 '+fmt(t.alarmDate)+'</span>':"";
   var photos=t.photos&&t.photos.length>0?'<div style="color:#6c63ff;font-size:11px;margin-top:3px">📷 '+t.photos.length+' foto(s)</div>':"";
-  return'<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">Proximo: '+t.interval+' '+t.unit+(t.lastKm?' - Ultimo: '+t.lastKm+' km':'')+'</div>'+photos+'</div><div class="task-actions">'+badge(t)+alarmBadge+'<button class="btn-small log-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button></div></div>';
+  var delBtn='<button class="btn-danger-sm del-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'" title="Remover">🗑️</button>';
+  return'<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">Proximo: '+t.interval+' '+t.unit+(t.lastKm?' - Ultimo: '+t.lastKm+' km':'')+'</div>'+photos+'</div><div class="task-actions">'+badge(t)+alarmBadge+'<button class="btn-small log-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button>'+delBtn+'</div></div>';
 }
 
 function renderVehicles(){
+  if(D.vehicles.length===0){
+    return'<div class="row"><div class="section-title" style="margin:0">Meus Veiculos</div><button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>'+
+    '<div class="welcome-box"><div style="font-size:48px;margin-bottom:12px">🚗</div><div style="font-weight:700;font-size:18px;margin-bottom:8px">Nenhum veiculo cadastrado</div><div style="color:#64748b;font-size:14px;margin-bottom:20px">Clique em "+ Novo" para adicionar seu primeiro veiculo</div></div>';
+  }
   var html='<div class="row"><div class="section-title" style="margin:0">Meus Veiculos</div><button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>';
   D.vehicles.forEach(function(v){
-    html+='<div class="card"><div class="card-header"><div><div style="font-weight:700;font-size:16px">🚗 '+v.name+'</div><div style="color:#64748b;font-size:13px">'+v.model+'</div></div></div><div class="card-body">';
+    html+='<div class="card"><div class="card-header"><div class="card-header-left"><div><div style="font-weight:700;font-size:16px">🚗 '+v.name+'</div><div style="color:#64748b;font-size:13px">'+v.model+'</div></div></div><div class="card-header-actions"><button class="btn-icon edit-vehicle" data-vid="'+v.id+'" title="Editar">✏️ Editar</button><button class="btn-icon add-task-vehicle" data-vid="'+v.id+'" title="Nova tarefa">+ Tarefa</button><button class="btn-icon del-vehicle" data-vid="'+v.id+'" title="Remover veiculo" style="color:#ef4444;border-color:#ef444444">🗑️</button></div></div><div class="card-body">';
     v.tasks.forEach(function(t){html+=taskItemHtml(t,"vehicle",v.id);});
     html+='</div></div>';
   });
@@ -245,7 +195,7 @@ function renderVehicles(){
 }
 
 function renderHome(){
-  var html='<div class="section-title">🏠 Manutencao da Casa</div><div class="card"><div class="card-body">';
+  var html='<div class="row"><div class="section-title" style="margin:0">🏠 Manutencao da Casa</div><button class="btn-primary" id="btnAddTaskHome">+ Tarefa</button></div><div class="card"><div class="card-body">';
   D.home.tasks.forEach(function(t){html+=taskItemHtml(t,"home",null);});
   return html+'</div></div>';
 }
@@ -255,10 +205,10 @@ function renderBills(){
   var paid=D.bills.filter(function(b){return b.paid;});
   var total=unpaid.reduce(function(s,b){return s+parseFloat(b.value||0);},0);
   var html='<div class="row"><div class="section-title" style="margin:0">Contas e Despesas</div><button class="btn-primary" id="btnAddBill">+ Nova</button></div>';
-  if(D.bills.length===0){return html+'<div class="empty">Nenhuma conta registrada.</div>';}
-  function billHtml(b){return'<div class="bill-item'+(b.paid?' paid':'')+'"><input type="checkbox" class="toggle-bill" data-id="'+b.id+'"'+(b.paid?' checked':'')+'><div class="bill-info"><div class="bill-name'+(b.paid?' paid':'')+'">'+b.name+'</div><div class="bill-sub">'+(b.dueDate?'Vence: '+fmt(b.dueDate):'')+(b.category?' - '+b.category:'')+'</div></div>'+(b.value?'<div class="bill-value'+(b.paid?' paid':'')+'">R$ '+parseFloat(b.value).toFixed(2)+'</div>':'')+'<button class="del-bill" data-id="'+b.id+'" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px">X</button></div>';}
-  if(unpaid.length>0){html+='<div class="section-sub" style="margin-top:0">Em aberto</div>';unpaid.forEach(function(b){html+=billHtml(b);});}
-  if(paid.length>0){html+='<div class="section-sub">Pagas</div>';paid.forEach(function(b){html+=billHtml(b);});}
+  if(D.bills.length===0)return html+'<div class="empty">Nenhuma conta registrada.</div>';
+  function bh(b){return'<div class="bill-item'+(b.paid?" paid":"")+'"><input type="checkbox" class="toggle-bill" data-id="'+b.id+'"'+(b.paid?" checked":"")+'><div class="bill-info"><div class="bill-name'+(b.paid?" paid":"")+'">'+b.name+'</div><div class="bill-sub">'+(b.dueDate?"Vence: "+fmt(b.dueDate):"")+(b.category?" - "+b.category:"")+'</div></div>'+(b.value?'<div class="bill-value'+(b.paid?" paid":"")+'">R$ '+parseFloat(b.value).toFixed(2)+'</div>':"")+'<button class="del-bill" data-id="'+b.id+'" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px">X</button></div>';}
+  if(unpaid.length>0){html+='<div class="section-sub" style="margin-top:0">Em aberto</div>';unpaid.forEach(function(b){html+=bh(b);});}
+  if(paid.length>0){html+='<div class="section-sub">Pagas</div>';paid.forEach(function(b){html+=bh(b);});}
   html+='<div class="divider"></div><div class="total-row"><span style="color:#64748b;font-weight:600">Total em aberto</span><span style="font-weight:700;font-size:16px;color:#6c63ff">R$ '+total.toFixed(2)+'</span></div>';
   return html;
 }
@@ -275,68 +225,40 @@ function renderHistory(){
 
 function renderReports(){
   var history=D.history.filter(function(h){return h.cost&&parseFloat(h.cost)>0;});
-  var totalGeral=history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
-  var byCategory={};
-  history.forEach(function(h){
-    var cat=h.category||"Outro";
-    if(!byCategory[cat])byCategory[cat]=0;
-    byCategory[cat]+=parseFloat(h.cost||0);
-  });
-  var maxVal=Math.max.apply(null,Object.values(byCategory).concat([1]));
-  var catHtml=Object.keys(byCategory).map(function(cat){
-    var val=byCategory[cat];
-    var pct=Math.round((val/maxVal)*100);
-    return'<div class="chart-bar-wrap"><div class="chart-bar-label"><span>'+cat+'</span><span style="color:#e2e8f0;font-weight:600">R$ '+val.toFixed(2)+'</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:'+pct+'%"></div></div></div>';
-  }).join("");
-  var byMonth={};
-  history.forEach(function(h){
-    if(!h.date)return;
-    var m=h.date.substring(0,7);
-    if(!byMonth[m])byMonth[m]=0;
-    byMonth[m]+=parseFloat(h.cost||0);
-  });
-  var months=Object.keys(byMonth).sort().slice(-6);
-  var maxM=Math.max.apply(null,months.map(function(m){return byMonth[m];}).concat([1]));
-  var monthHtml=months.map(function(m){
-    var val=byMonth[m];
-    var pct=Math.round((val/maxM)*100);
-    var parts=m.split("-");
-    return'<div class="chart-bar-wrap"><div class="chart-bar-label"><span>'+parts[1]+"/"+parts[0]+'</span><span style="color:#e2e8f0;font-weight:600">R$ '+val.toFixed(2)+'</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:'+pct+'%;background:#22c55e"></div></div></div>';
-  }).join("");
-  var html='<div class="section-title">📊 Relatorio de Gastos</div>';
-  html+='<div class="card" style="padding:20px;margin-bottom:16px"><div style="font-size:13px;color:#64748b;margin-bottom:4px">Total gasto em manutencoes</div><div style="font-size:32px;font-weight:800;color:#6c63ff">R$ '+totalGeral.toFixed(2)+'</div></div>';
-  if(catHtml){html+='<div class="section-sub">Por categoria</div><div class="card" style="padding:16px">'+catHtml+'</div>';}
-  if(monthHtml){html+='<div class="section-sub">Ultimos 6 meses</div><div class="card" style="padding:16px">'+monthHtml+'</div>';}
-  if(!catHtml&&!monthHtml){html+='<div class="empty">Nenhum gasto registrado ainda.<br>Registre manutencoes com custo para ver o relatorio.</div>';}
+  var total=history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
+  var bycat={};history.forEach(function(h){var c=h.category||"Outro";if(!bycat[c])bycat[c]=0;bycat[c]+=parseFloat(h.cost||0);});
+  var maxc=Math.max.apply(null,Object.values(bycat).concat([1]));
+  var catHtml=Object.keys(bycat).map(function(c){var v=bycat[c];return'<div class="chart-bar-wrap"><div class="chart-bar-label"><span>'+c+'</span><span style="color:#e2e8f0;font-weight:600">R$ '+v.toFixed(2)+'</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:'+Math.round(v/maxc*100)+'%"></div></div></div>';}).join("");
+  var bym={};history.forEach(function(h){if(!h.date)return;var m=h.date.substring(0,7);if(!bym[m])bym[m]=0;bym[m]+=parseFloat(h.cost||0);});
+  var months=Object.keys(bym).sort().slice(-6);
+  var maxm=Math.max.apply(null,months.map(function(m){return bym[m];}).concat([1]));
+  var mHtml=months.map(function(m){var v=bym[m];var p=m.split("-");return'<div class="chart-bar-wrap"><div class="chart-bar-label"><span>'+p[1]+"/"+p[0]+'</span><span style="color:#e2e8f0;font-weight:600">R$ '+v.toFixed(2)+'</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:'+Math.round(v/maxm*100)+'%;background:#22c55e"></div></div></div>';}).join("");
+  var html='<div class="section-title">📊 Relatorio de Gastos</div><div class="card" style="padding:20px;margin-bottom:16px"><div style="font-size:13px;color:#64748b;margin-bottom:4px">Total gasto em manutencoes</div><div style="font-size:32px;font-weight:800;color:#6c63ff">R$ '+total.toFixed(2)+'</div></div>';
+  if(catHtml)html+='<div class="section-sub">Por categoria</div><div class="card" style="padding:16px">'+catHtml+'</div>';
+  if(mHtml)html+='<div class="section-sub">Ultimos 6 meses</div><div class="card" style="padding:16px">'+mHtml+'</div>';
+  if(!catHtml&&!mHtml)html+='<div class="empty">Nenhum gasto registrado ainda.</div>';
   html+='<div class="section-sub">Exportar</div><div class="card" style="padding:16px"><button class="btn-primary" id="btnExportPDF" style="width:100%">📄 Exportar Relatorio PDF</button></div>';
   return html;
 }
 
 function exportPDF(){
-  var history=D.history;
-  var totalGeral=history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
-  var rows=history.map(function(h){
-    return'<tr><td>'+fmt(h.date)+'</td><td>'+h.task+'</td><td>'+h.category+'</td><td>'+(h.notes||"-")+'</td><td>'+(h.cost?'R$ '+parseFloat(h.cost).toFixed(2):"-")+'</td></tr>';
-  }).join("");
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatorio ManutencaoPRO</title>'+
-    '<style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#6c63ff;margin-bottom:4px}'+
-    '.sub{color:#888;font-size:14px;margin-bottom:24px}table{width:100%;border-collapse:collapse;font-size:13px}'+
-    'th{background:#6c63ff;color:#fff;padding:10px;text-align:left}td{padding:9px;border-bottom:1px solid #eee}'+
-    'tr:nth-child(even){background:#f9f9f9}.total{margin-top:20px;font-size:18px;font-weight:700;color:#6c63ff}'+
-    '</style></head><body>'+
-    '<h1>🔧 ManutencaoPRO</h1><div class="sub">Relatorio gerado em '+fmt(today())+'</div>'+
-    '<table><tr><th>Data</th><th>Manutencao</th><th>Categoria</th><th>Observacoes</th><th>Custo</th></tr>'+rows+'</table>'+
-    '<div class="total">Total gasto: R$ '+totalGeral.toFixed(2)+'</div></body></html>';
+  var total=D.history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
+  var rows=D.history.map(function(h){return'<tr><td>'+fmt(h.date)+'</td><td>'+h.task+'</td><td>'+h.category+'</td><td>'+(h.notes||"-")+'</td><td>'+(h.cost?'R$ '+parseFloat(h.cost).toFixed(2):"-")+'</td></tr>';}).join("");
   var w=window.open("","_blank");
-  if(w){w.document.write(html);w.document.close();setTimeout(function(){w.print();},500);}
+  if(w){w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatorio ManutencaoPRO</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#6c63ff}table{width:100%;border-collapse:collapse;font-size:13px;margin-top:20px}th{background:#6c63ff;color:#fff;padding:10px;text-align:left}td{padding:9px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}.total{margin-top:20px;font-size:18px;font-weight:700;color:#6c63ff}</style></head><body><h1>🔧 ManutencaoPRO</h1><p style="color:#888">Relatorio gerado em '+fmt(today())+'</p><table><tr><th>Data</th><th>Manutencao</th><th>Categoria</th><th>Observacoes</th><th>Custo</th></tr>'+rows+'</table><div class="total">Total: R$ '+total.toFixed(2)+'</div></body></html>');w.document.close();setTimeout(function(){w.print();},500);}
 }
 
 function bindEvents(){
   document.querySelectorAll(".nav-btn").forEach(function(btn){btn.addEventListener("click",function(){document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});btn.classList.add("active");currentTab=btn.getAttribute("data-tab");render();});});
   document.querySelectorAll(".log-task").forEach(function(btn){btn.addEventListener("click",function(){openLogModal(btn.getAttribute("data-sec"),btn.getAttribute("data-vid"),parseInt(btn.getAttribute("data-tid")),btn.getAttribute("data-name"));});});
-  var bav=document.getElementById("btnAddVehicle");if(bav)bav.addEventListener("click",openAddVehicleModal);
-  var bab=document.getElementById("btnAddBill");if(bab)bab.addEventListener("click",openAddBillModal);
-  var bep=document.getElementById("btnExportPDF");if(bep)bep.addEventListener("click",exportPDF);
+  document.querySelectorAll(".del-task").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover esta tarefa?"))return;var sec=btn.getAttribute("data-sec"),vid=btn.getAttribute("data-vid"),tid=parseInt(btn.getAttribute("data-tid"));if(sec==="home"){D.home.tasks=D.home.tasks.filter(function(t){return t.id!==tid;});}else{var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v)v.tasks=v.tasks.filter(function(t){return t.id!==tid;});}save();render();});});
+  document.querySelectorAll(".del-vehicle").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover este veiculo e todas as suas tarefas?"))return;D.vehicles=D.vehicles.filter(function(v){return v.id!==parseInt(btn.getAttribute("data-vid"));});save();render();});});
+  document.querySelectorAll(".edit-vehicle").forEach(function(btn){btn.addEventListener("click",function(){openEditVehicleModal(parseInt(btn.getAttribute("data-vid")));});});
+  document.querySelectorAll(".add-task-vehicle").forEach(function(btn){btn.addEventListener("click",function(){openAddTaskModal("vehicle",parseInt(btn.getAttribute("data-vid")));});});
+  var btnAddV=document.getElementById("btnAddVehicle");if(btnAddV)btnAddV.addEventListener("click",openAddVehicleModal);
+  var btnAddTH=document.getElementById("btnAddTaskHome");if(btnAddTH)btnAddTH.addEventListener("click",function(){openAddTaskModal("home",null);});
+  var btnAddB=document.getElementById("btnAddBill");if(btnAddB)btnAddB.addEventListener("click",openAddBillModal);
+  var btnExp=document.getElementById("btnExportPDF");if(btnExp)btnExp.addEventListener("click",exportPDF);
   document.querySelectorAll(".toggle-bill").forEach(function(cb){cb.addEventListener("change",function(){var b=D.bills.find(function(b){return b.id===parseInt(cb.getAttribute("data-id"));});if(b)b.paid=!b.paid;save();render();});});
   document.querySelectorAll(".del-bill").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover?"))return;D.bills=D.bills.filter(function(b){return b.id!==parseInt(btn.getAttribute("data-id"));});save();render();});});
 }
@@ -346,123 +268,116 @@ function closeModal(){document.getElementById("modalContainer").innerHTML="";}
 function openLogModal(sec,vid,tid,name){
   var isV=sec==="vehicle";
   var task=null;
-  if(sec==="home"){task=D.home.tasks.find(function(t){return t.id===tid;});}
+  if(sec==="home")task=D.home.tasks.find(function(t){return t.id===tid;});
   else{var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v)task=v.tasks.find(function(t){return t.id===tid;});}
-  var curInterval=task?task.interval:5000;
-  var curUnit=task?task.unit:"km";
-  var unitOptions="";
-  if(isV){unitOptions='<option value="km"'+(curUnit==="km"?" selected":"")+'>km</option><option value="meses"'+(curUnit==="meses"?" selected":"")+'>meses</option>';}
-  else{unitOptions='<option value="meses" selected>meses</option>';}
-
+  var ci=task?task.interval:5000,cu=task?task.unit:"km";
+  var uOpts='<option value="km"'+(cu==="km"?" selected":"")+'>km</option><option value="meses"'+(cu==="meses"?" selected":"")+'>meses</option>';
+  if(!isV)uOpts='<option value="meses" selected>meses</option>';
   document.getElementById("modalContainer").innerHTML=
     '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
     '<div class="modal-title">✅ Registrar: '+name+'</div>'+
-    '<div class="field-row">'+
-    '<div class="field"><label>Data</label><input type="date" id="fDate" value="'+today()+'"></div>'+
-    (isV?'<div class="field"><label>KM Atual</label><input type="number" id="fKm" placeholder="Ex: 45000" value="'+(task&&task.lastKm?task.lastKm:'')+'"></div>':'')+
-    '</div>'+
-    '<div class="field-row">'+
-    '<div class="field"><label>Proximo intervalo</label><input type="number" id="fInterval" value="'+curInterval+'"></div>'+
-    '<div class="field"><label>Unidade</label><select id="fUnit">'+unitOptions+'</select></div>'+
-    '</div>'+
-    '<div class="field-row">'+
+    '<div class="field-row"><div class="field"><label>Data</label><input type="date" id="fDate" value="'+today()+'"></div>'+(isV?'<div class="field"><label>KM Atual</label><input type="number" id="fKm" placeholder="Ex: 45000" value="'+(task&&task.lastKm?task.lastKm:'')+'"></div>':'')+'</div>'+
+    '<div class="field-row"><div class="field"><label>Proximo intervalo</label><input type="number" id="fInterval" value="'+ci+'"></div><div class="field"><label>Unidade</label><select id="fUnit">'+uOpts+'</select></div></div>'+
     '<div class="field"><label>Custo (R$)</label><input type="number" id="fCost" placeholder="0.00" step="0.01"></div>'+
-    '</div>'+
     '<div class="field"><label>Observacoes</label><textarea id="fNotes" placeholder="Ex: Oleo 5W30 sintetico..."></textarea></div>'+
     '<div class="field"><label>📷 Foto (nota fiscal / servico)</label><input type="file" id="fPhoto" accept="image/*" multiple style="color:#e2e8f0;padding:8px 0"></div>'+
-    '<div class="alarm-box">'+
-    '<div class="alarm-box-title">🔔 Alarme Lembrete</div>'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
-    '<span style="font-size:13px;color:#e2e8f0">Ativar alarme para verificar</span>'+
-    '<label class="toggle-switch"><input type="checkbox" id="fAlarmActive"'+(task&&task.alarmActive?" checked":"")+'>'+
-    '<span class="toggle-slider"></span></label>'+
-    '</div>'+
+    '<div class="alarm-box"><div class="alarm-box-title">🔔 Alarme Lembrete</div>'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px;color:#e2e8f0">Ativar alarme para verificar</span>'+
+    '<label class="toggle-switch"><input type="checkbox" id="fAlarmActive"'+(task&&task.alarmActive?" checked":"")+'><span class="toggle-slider"></span></label></div>'+
     '<div id="alarmDateField" style="display:'+(task&&task.alarmActive?"block":"none")+'">'+
     '<div class="field" style="margin:0"><label>Me avisar em</label><input type="date" id="fAlarmDate" value="'+(task&&task.alarmDate?task.alarmDate:'')+'"></div>'+
-    '<div style="color:#64748b;font-size:11px;margin-top:6px">O app vai te notificar nessa data para verificar o veiculo</div>'+
-    '</div>'+
-    '</div>'+
-    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSav">Salvar</button></div>'+
-    '</div></div>';
-
-  document.getElementById("fAlarmActive").addEventListener("change",function(){
-    document.getElementById("alarmDateField").style.display=this.checked?"block":"none";
-  });
+    '<div style="color:#64748b;font-size:11px;margin-top:6px">O app vai te notificar nessa data para verificar</div></div></div>'+
+    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSav">Salvar</button></div></div></div>';
+  document.getElementById("fAlarmActive").addEventListener("change",function(){document.getElementById("alarmDateField").style.display=this.checked?"block":"none";});
   document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
   document.getElementById("mCan").addEventListener("click",closeModal);
   document.getElementById("mSav").addEventListener("click",function(){
-    var date=document.getElementById("fDate").value;
-    if(!date){alert("Informe a data!");return;}
+    var date=document.getElementById("fDate").value;if(!date){alert("Informe a data!");return;}
     var km=document.getElementById("fKm")?document.getElementById("fKm").value:"";
     var cost=document.getElementById("fCost").value;
     var notes=document.getElementById("fNotes").value;
-    var interval=parseInt(document.getElementById("fInterval").value)||curInterval;
+    var interval=parseInt(document.getElementById("fInterval").value)||ci;
     var unit=document.getElementById("fUnit").value;
     var alarmActive=document.getElementById("fAlarmActive").checked;
     var alarmDate=document.getElementById("fAlarmDate")?document.getElementById("fAlarmDate").value:"";
     var photoFiles=document.getElementById("fPhoto").files;
     var taskName="";
-
     function finalize(photos){
-      if(sec==="home"){
-        var t=D.home.tasks.find(function(t){return t.id===tid;});
-        if(t){t.lastDone=date;t.notes=notes;t.interval=interval;t.unit=unit;t.alarmActive=alarmActive;t.alarmDate=alarmDate;if(!t.photos)t.photos=[];t.photos=t.photos.concat(photos);taskName=t.name;}
-      } else {
-        var v2=D.vehicles.find(function(v){return v.id===parseInt(vid);});
-        if(v2){var t2=v2.tasks.find(function(t){return t.id===tid;});if(t2){t2.lastDone=date;if(km)t2.lastKm=km;t2.notes=notes;t2.interval=interval;t2.unit=unit;t2.alarmActive=alarmActive;t2.alarmDate=alarmDate;if(!t2.photos)t2.photos=[];t2.photos=t2.photos.concat(photos);taskName=t2.name;}}
-      }
-      if(alarmActive&&alarmDate){scheduleNotif("🔔 ManutencaoPRO","Hora de verificar: "+taskName,alarmDate);}
-      D.history.unshift({id:Date.now(),date:date,task:taskName,
-        category:sec==="home"?"Casa":(D.vehicles.find(function(v){return v.id===parseInt(vid);})||{name:""}).name,
-        notes:notes,cost:cost,photos:photos});
+      if(sec==="home"){var t=D.home.tasks.find(function(t){return t.id===tid;});if(t){t.lastDone=date;t.notes=notes;t.interval=interval;t.unit=unit;t.alarmActive=alarmActive;t.alarmDate=alarmDate;if(!t.photos)t.photos=[];t.photos=t.photos.concat(photos);taskName=t.name;}}
+      else{var v2=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v2){var t2=v2.tasks.find(function(t){return t.id===tid;});if(t2){t2.lastDone=date;if(km)t2.lastKm=km;t2.notes=notes;t2.interval=interval;t2.unit=unit;t2.alarmActive=alarmActive;t2.alarmDate=alarmDate;if(!t2.photos)t2.photos=[];t2.photos=t2.photos.concat(photos);taskName=t2.name;}}}
+      if(alarmActive&&alarmDate)scheduleNotif("🔔 ManutencaoPRO","Hora de verificar: "+taskName,alarmDate);
+      D.history.unshift({id:Date.now(),date:date,task:taskName,category:sec==="home"?"Casa":(D.vehicles.find(function(v){return v.id===parseInt(vid);})||{name:""}).name,notes:notes,cost:cost,photos:photos});
       save();closeModal();render();
     }
-
-    if(photoFiles&&photoFiles.length>0){
-      var photos=[];var loaded=0;
-      Array.from(photoFiles).forEach(function(file){
-        var r=new FileReader();
-        r.onload=function(e){photos.push(e.target.result);loaded++;if(loaded===photoFiles.length)finalize(photos);};
-        r.readAsDataURL(file);
-      });
-    } else {finalize([]);}
+    if(photoFiles&&photoFiles.length>0){var photos=[],loaded=0;Array.from(photoFiles).forEach(function(file){var r=new FileReader();r.onload=function(e){photos.push(e.target.result);loaded++;if(loaded===photoFiles.length)finalize(photos);};r.readAsDataURL(file);});}
+    else finalize([]);
   });
 }
 
 function openAddVehicleModal(){
   document.getElementById("modalContainer").innerHTML=
-    '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
-    '<div class="modal-title">🚗 Novo Veiculo</div>'+
-    '<div class="field"><label>Nome</label><input type="text" id="fVN" placeholder="Ex: Meu Carro"></div>'+
+    '<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">🚗 Novo Veiculo</div>'+
+    '<div class="field"><label>Nome</label><input type="text" id="fVN" placeholder="Ex: Carro da Familia"></div>'+
     '<div class="field"><label>Modelo / Ano</label><input type="text" id="fVM" placeholder="Ex: Fiat Strada 2022"></div>'+
-    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavV">Adicionar</button></div>'+
-    '</div></div>';
+    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavV">Adicionar</button></div></div></div>';
   document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
   document.getElementById("mCan").addEventListener("click",closeModal);
   document.getElementById("mSavV").addEventListener("click",function(){
-    var name=document.getElementById("fVN").value||"Novo Veiculo";
+    var name=document.getElementById("fVN").value;if(!name){alert("Informe o nome!");return;}
     var model=document.getElementById("fVM").value||"";
-    var tasks=JSON.parse(JSON.stringify(DEFAULT.vehicles[0].tasks));
-    D.vehicles.push({id:Date.now(),name:name,model:model,tasks:tasks});
+    D.vehicles.push({id:Date.now(),name:name,model:model,tasks:JSON.parse(JSON.stringify(DEFAULT_TASKS))});
+    save();closeModal();render();
+  });
+}
+
+function openEditVehicleModal(vid){
+  var v=D.vehicles.find(function(v){return v.id===vid;});if(!v)return;
+  document.getElementById("modalContainer").innerHTML=
+    '<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">✏️ Editar Veiculo</div>'+
+    '<div class="field"><label>Nome</label><input type="text" id="fVN" value="'+v.name+'"></div>'+
+    '<div class="field"><label>Modelo / Ano</label><input type="text" id="fVM" value="'+v.model+'"></div>'+
+    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavV">Salvar</button></div></div></div>';
+  document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
+  document.getElementById("mCan").addEventListener("click",closeModal);
+  document.getElementById("mSavV").addEventListener("click",function(){
+    var name=document.getElementById("fVN").value;if(!name){alert("Informe o nome!");return;}
+    v.name=name;v.model=document.getElementById("fVM").value||"";
+    save();closeModal();render();
+  });
+}
+
+function openAddTaskModal(sec,vid){
+  document.getElementById("modalContainer").innerHTML=
+    '<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">+ Nova Tarefa</div>'+
+    '<div class="field"><label>Nome da Tarefa</label><input type="text" id="fTN" placeholder="Ex: Palheta do Vidro, Oleo da Caixa..."></div>'+
+    '<div class="field-row"><div class="field"><label>Intervalo</label><input type="number" id="fTI" value="6" placeholder="Ex: 10000"></div>'+
+    '<div class="field"><label>Unidade</label><select id="fTU"><option value="km">km</option><option value="meses">meses</option></select></div></div>'+
+    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavT">Adicionar</button></div></div></div>';
+  document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
+  document.getElementById("mCan").addEventListener("click",closeModal);
+  document.getElementById("mSavT").addEventListener("click",function(){
+    var name=document.getElementById("fTN").value;if(!name){alert("Informe o nome da tarefa!");return;}
+    var interval=parseInt(document.getElementById("fTI").value)||6;
+    var unit=document.getElementById("fTU").value;
+    var newTask={id:Date.now(),name:name,interval:interval,unit:unit,lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]};
+    if(sec==="home")D.home.tasks.push(newTask);
+    else{var v=D.vehicles.find(function(v){return v.id===vid;});if(v)v.tasks.push(newTask);}
     save();closeModal();render();
   });
 }
 
 function openAddBillModal(){
   document.getElementById("modalContainer").innerHTML=
-    '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
-    '<div class="modal-title">💰 Nova Conta</div>'+
+    '<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">💰 Nova Conta</div>'+
     '<div class="field"><label>Nome da Conta</label><input type="text" id="fBN" placeholder="Ex: Troca de Oleo"></div>'+
     '<div class="field-row"><div class="field"><label>Valor (R$)</label><input type="number" id="fBV" placeholder="Ex: 200.00" step="0.01"></div>'+
     '<div class="field"><label>Vencimento</label><input type="date" id="fBD"></div></div>'+
     '<div class="field"><label>Categoria</label><select id="fBC"><option value="">Selecione...</option><option>Veiculo</option><option>Casa</option><option>Seguro</option><option>IPTU/IPVA</option><option>Outro</option></select></div>'+
-    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavB">Salvar</button></div>'+
-    '</div></div>';
+    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavB">Salvar</button></div></div></div>';
   document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
   document.getElementById("mCan").addEventListener("click",closeModal);
   document.getElementById("mSavB").addEventListener("click",function(){
-    var name=document.getElementById("fBN").value;
-    if(!name){alert("Informe o nome!");return;}
+    var name=document.getElementById("fBN").value;if(!name){alert("Informe o nome!");return;}
     D.bills.push({id:Date.now(),name:name,paid:false,value:document.getElementById("fBV").value,dueDate:document.getElementById("fBD").value,category:document.getElementById("fBC").value});
     save();closeModal();render();
   });

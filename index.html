@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-
-<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#0f1117">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="ManutencaoPRO">
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#0f1117"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="ManutencaoPRO"/>
 <title>ManutencaoPRO</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -62,9 +62,6 @@ button,input,select,textarea{font-family:inherit}
 .empty{background:#1a1d27;border:1px solid #2a2d3e;border-radius:12px;padding:32px;text-align:center;color:#64748b;line-height:1.7}
 .alert-pill{background:#ef444422;color:#ef4444;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600}
 input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff;flex-shrink:0}
-.icon-grid{display:flex;gap:8px;flex-wrap:wrap}
-.icon-btn{font-size:22px;background:#0f1117;border:2px solid #2a2d3e;border-radius:10px;padding:6px 10px;cursor:pointer}
-.icon-btn.sel{border-color:#6c63ff;background:#6c63ff22}
 .divider{height:1px;background:#2a2d3e;margin:12px 0}
 .total-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
 </style>
@@ -72,21 +69,21 @@ input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff;
 <body>
 <div class="header">
   <div class="header-inner">
-    <div class="header-title"><span>🔧</span> ManutencaoPRO</div>
+    <div class="header-title">🔧 ManutencaoPRO</div>
     <div id="alertPill" style="display:none" class="alert-pill"></div>
   </div>
 </div>
 <nav class="bottom-nav" id="bottomNav">
-  <button class="nav-btn active" data-tab="dashboard"><span class="nav-icon">⋮</span>Painel</button>
+  <button class="nav-btn active" data-tab="dashboard"><span class="nav-icon">⊞</span>Painel</button>
   <button class="nav-btn" data-tab="vehicles"><span class="nav-icon">🚗</span>Veiculos</button>
   <button class="nav-btn" data-tab="home"><span class="nav-icon">🏠</span>Casa</button>
   <button class="nav-btn" data-tab="bills"><span class="nav-icon">💰</span>Contas</button>
   <button class="nav-btn" data-tab="history"><span class="nav-icon">📋</span>Historico</button>
 </nav>
-<div class="content" id="appContent"><div class="section-title">Painel Geral</div><div class="stats-grid"><div class="stat-card"><div class="stat-value" style="color:#ef4444">0</div><div class="stat-label">Atrasados</div></div><div class="stat-card"><div class="stat-value" style="color:#f59e0b">0</div><div class="stat-label">Atencao</div></div><div class="stat-card"><div class="stat-value" style="color:#64748b">13</div><div class="stat-label">Nao registrados</div></div><div class="stat-card"><div class="stat-value" style="color:#22c55e">0</div><div class="stat-label">Em dia</div></div></div><div class="section-sub">Itens que precisam de atencao</div><div class="empty">Tudo em dia!</div></div>
+<div class="content" id="appContent"></div>
 <div id="modalContainer"></div>
 <script>
-var DEFAULT={vehicles:[{id:1,name:"Meu Carro",model:"Informe o modelo",icon:"&#128663;",tasks:[
+var DEFAULT={vehicles:[{id:1,name:"Meu Carro",model:"Informe o modelo",icon:"car",tasks:[
 {id:1,name:"Troca de Oleo",interval:5000,unit:"km",lastDone:"",lastKm:"",notes:""},
 {id:2,name:"Filtro de Ar",interval:15000,unit:"km",lastDone:"",lastKm:"",notes:""},
 {id:3,name:"Rodizio de Pneus",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:""},
@@ -103,238 +100,37 @@ home:{tasks:[
 {id:6,name:"Revisao Eletrica",interval:24,unit:"meses",lastDone:"",notes:""},
 {id:7,name:"Limpeza Calhas",interval:12,unit:"meses",lastDone:"",notes:""}
 ]},history:[],bills:[]};
-
 function load(){try{var s=localStorage.getItem("mnt_pro_v4");return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT))}catch(e){return JSON.parse(JSON.stringify(DEFAULT))}}
 function save(){try{localStorage.setItem("mnt_pro_v4",JSON.stringify(D))}catch(e){}}
 var D=load();
 var currentTab="dashboard";
-
 function daysAgo(d){if(!d)return null;return Math.floor((Date.now()-new Date(d))/86400000)}
-function status(t){
-  if(!t.lastDone)return "none";
-  var d=daysAgo(t.lastDone);
-  if(t.unit==="meses"){var p=(d/30)/t.interval;if(p>=1)return "over";if(p>=0.8)return "warn";}
-  return "ok";
-}
-function badge(t){
-  var s=status(t);
-  if(s==="none")return '<span class="badge badge-none">Nao registrado</span>';
-  var d=daysAgo(t.lastDone);
-  var l=d===0?"Hoje":d===1?"Ontem":d+"d atras";
-  if(s==="over")return '<span class="badge badge-over">Atrasado - '+l+'</span>';
-  if(s==="warn")return '<span class="badge badge-warn">Atencao - '+l+'</span>';
-  return '<span class="badge badge-ok">Em dia - '+l+'</span>';
-}
-function fmt(s){if(!s)return "";var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
+function status(t){if(!t.lastDone)return"none";var d=daysAgo(t.lastDone);if(t.unit==="meses"){var p=(d/30)/t.interval;if(p>=1)return"over";if(p>=0.8)return"warn";}return"ok";}
+function badge(t){var s=status(t);if(s==="none")return'<span class="badge badge-none">Nao registrado</span>';var d=daysAgo(t.lastDone);var l=d===0?"Hoje":d===1?"Ontem":d+"d atras";if(s==="over")return'<span class="badge badge-over">Atrasado - '+l+'</span>';if(s==="warn")return'<span class="badge badge-warn">Atencao - '+l+'</span>';return'<span class="badge badge-ok">Em dia - '+l+'</span>';}
+function fmt(s){if(!s)return"";var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
 function today(){return new Date().toISOString().split("T")[0]}
-function allTasks(){
-  var r=[];
-  D.home.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:"Casa",sec:"home"}));});
-  D.vehicles.forEach(function(v){v.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:v.name,sec:"vehicle",vid:v.id}));});});
-  return r;
-}
-
-function render(){
-  var el=document.getElementById("appContent");
-  if(!el)return;
-  if(currentTab==="dashboard")el.innerHTML=renderDash();
-  else if(currentTab==="vehicles")el.innerHTML=renderVehicles();
-  else if(currentTab==="home")el.innerHTML=renderHome();
-  else if(currentTab==="bills")el.innerHTML=renderBills();
-  else if(currentTab==="history")el.innerHTML=renderHistory();
-  bindEvents();
-  updatePill();
-}
-
-function updatePill(){
-  var n=allTasks().filter(function(t){return status(t)==="over"||status(t)==="warn";}).length;
-  var p=document.getElementById("alertPill");
-  if(!p)return;
-  if(n>0){p.style.display="";p.textContent="! "+n+" pendencia"+(n>1?"s":"");}
-  else p.style.display="none";
-}
-
-function renderDash(){
-  var all=allTasks();
-  var over=all.filter(function(t){return status(t)==="over";});
-  var warn=all.filter(function(t){return status(t)==="warn";});
-  var none=all.filter(function(t){return !t.lastDone;});
-  var ok=all.filter(function(t){return t.lastDone&&status(t)==="ok";});
-  var att=over.concat(warn);
-  var attHtml=att.length===0?'<div class="empty">Tudo em dia!</div>':
-    att.map(function(t){return '<div class="task-item" style="margin-bottom:8px"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">'+t.cat+'</div></div>'+badge(t)+'</div>';}).join("");
-  return '<div class="section-title">Painel Geral</div>'+
-    '<div class="stats-grid">'+
-    '<div class="stat-card"><div class="stat-value" style="color:#ef4444">'+over.length+'</div><div class="stat-label">Atrasados</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:#f59e0b">'+warn.length+'</div><div class="stat-label">Atencao</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:#64748b">'+none.length+'</div><div class="stat-label">Nao registrados</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:#22c55e">'+ok.length+'</div><div class="stat-label">Em dia</div></div>'+
-    '</div><div class="section-sub">Itens que precisam de atencao</div>'+attHtml;
-}
-
-function renderVehicles(){
-  var html='<div class="row"><div class="section-title" style="margin:0">Meus Veiculos</div><button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>';
-  D.vehicles.forEach(function(v){
-    html+='<div class="card"><div class="card-header"><div><div style="font-weight:700;font-size:16px">'+v.name+'</div><div style="color:#64748b;font-size:13px">'+v.model+'</div></div></div><div class="card-body">';
-    v.tasks.forEach(function(t){
-      html+='<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">A cada '+t.interval+' '+t.unit+(t.lastKm?' - Ultimo: '+t.lastKm+' km':'')+'</div></div><div class="task-actions">'+badge(t)+'<button class="btn-small log-task" data-sec="vehicle" data-vid="'+v.id+'" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button></div></div>';
-    });
-    html+='</div></div>';
-  });
-  return html;
-}
-
-function renderHome(){
-  var html='<div class="section-title">Manutencao da Casa</div><div class="card"><div class="card-body">';
-  D.home.tasks.forEach(function(t){
-    html+='<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">A cada '+t.interval+' '+t.unit+'</div></div><div class="task-actions">'+badge(t)+'<button class="btn-small log-task" data-sec="home" data-vid="" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button></div></div>';
-  });
-  return html+'</div></div>';
-}
-
-function renderBills(){
-  var unpaid=D.bills.filter(function(b){return !b.paid;});
-  var paid=D.bills.filter(function(b){return b.paid;});
-  var total=unpaid.reduce(function(s,b){return s+parseFloat(b.value||0);},0);
-  var html='<div class="row"><div class="section-title" style="margin:0">Contas e Despesas</div><button class="btn-primary" id="btnAddBill">+ Nova</button></div>';
-  if(D.bills.length===0){return html+'<div class="empty">Nenhuma conta registrada.<br>Clique em + Nova para comecar.</div>';}
-  function billHtml(b){
-    return '<div class="bill-item'+(b.paid?' paid':'')+'"><input type="checkbox" class="toggle-bill" data-id="'+b.id+'"'+(b.paid?' checked':'')+'><div class="bill-info"><div class="bill-name'+(b.paid?' paid':'')+'">'+b.name+'</div><div class="bill-sub">'+(b.dueDate?'Vence: '+fmt(b.dueDate):'')+(b.category?' - '+b.category:'')+'</div></div>'+(b.value?'<div class="bill-value'+(b.paid?' paid':'')+'">R$ '+parseFloat(b.value).toFixed(2)+'</div>':'')+'<button class="del-bill" data-id="'+b.id+'" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:18px;padding:0 4px">X</button></div>';
-  }
-  if(unpaid.length>0){html+='<div class="section-sub" style="margin-top:0">Em aberto</div>';unpaid.forEach(function(b){html+=billHtml(b);});}
-  if(paid.length>0){html+='<div class="section-sub">Pagas</div>';paid.forEach(function(b){html+=billHtml(b);});}
-  html+='<div class="divider"></div><div class="total-row"><span style="color:#64748b;font-weight:600">Total em aberto</span><span style="font-weight:700;font-size:16px;color:#6c63ff">R$ '+total.toFixed(2)+'</span></div>';
-  return html;
-}
-
-function renderHistory(){
-  var html='<div class="section-title">Historico de Manutencoes</div>';
-  if(D.history.length===0)return html+'<div class="empty">Nenhuma manutencao registrada ainda.</div>';
-  D.history.forEach(function(h){
-    html+='<div class="hist-item"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:14px">'+h.task+'</div>'+(h.cost?'<div style="font-weight:700;color:#f59e0b">R$ '+parseFloat(h.cost).toFixed(2)+'</div>':'')+'</div><div style="color:#64748b;font-size:12px;margin-top:3px">'+h.category+' - '+fmt(h.date)+'</div>'+(h.notes?'<div style="color:#64748b;font-size:12px;font-style:italic;margin-top:3px">'+h.notes+'</div>':'')+'</div>';
-  });
-  return html;
-}
-
+function allTasks(){var r=[];D.home.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:"Casa",sec:"home"}));});D.vehicles.forEach(function(v){v.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:v.name,sec:"vehicle",vid:v.id}));});});return r;}
+function render(){var el=document.getElementById("appContent");if(!el)return;if(currentTab==="dashboard")el.innerHTML=renderDash();else if(currentTab==="vehicles")el.innerHTML=renderVehicles();else if(currentTab==="home")el.innerHTML=renderHome();else if(currentTab==="bills")el.innerHTML=renderBills();else if(currentTab==="history")el.innerHTML=renderHistory();bindEvents();updatePill();}
+function updatePill(){var n=allTasks().filter(function(t){return status(t)==="over"||status(t)==="warn";}).length;var p=document.getElementById("alertPill");if(!p)return;if(n>0){p.style.display="";p.textContent="! "+n+" pendencia"+(n>1?"s":"");}else p.style.display="none";}
+function renderDash(){var all=allTasks();var over=all.filter(function(t){return status(t)==="over";});var warn=all.filter(function(t){return status(t)==="warn";});var none=all.filter(function(t){return !t.lastDone;});var ok=all.filter(function(t){return t.lastDone&&status(t)==="ok";});var att=over.concat(warn);var attHtml=att.length===0?'<div class="empty">Tudo em dia!</div>':att.map(function(t){return'<div class="task-item" style="margin-bottom:8px"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">'+t.cat+'</div></div>'+badge(t)+'</div>';}).join("");return'<div class="section-title">Painel Geral</div><div class="stats-grid"><div class="stat-card"><div class="stat-value" style="color:#ef4444">'+over.length+'</div><div class="stat-label">Atrasados</div></div><div class="stat-card"><div class="stat-value" style="color:#f59e0b">'+warn.length+'</div><div class="stat-label">Atencao</div></div><div class="stat-card"><div class="stat-value" style="color:#64748b">'+none.length+'</div><div class="stat-label">Nao registrados</div></div><div class="stat-card"><div class="stat-value" style="color:#22c55e">'+ok.length+'</div><div class="stat-label">Em dia</div></div></div><div class="section-sub">Itens que precisam de atencao</div>'+attHtml;}
+function renderVehicles(){var html='<div class="row"><div class="section-title" style="margin:0">Meus Veiculos</div><button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>';D.vehicles.forEach(function(v){html+='<div class="card"><div class="card-header"><div><div style="font-weight:700;font-size:16px">'+v.name+'</div><div style="color:#64748b;font-size:13px">'+v.model+'</div></div></div><div class="card-body">';v.tasks.forEach(function(t){html+='<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">A cada '+t.interval+' '+t.unit+(t.lastKm?' - Ultimo: '+t.lastKm+' km':'')+'</div></div><div class="task-actions">'+badge(t)+'<button class="btn-small log-task" data-sec="vehicle" data-vid="'+v.id+'" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button></div></div>';});html+='</div></div>';});return html;}
+function renderHome(){var html='<div class="section-title">Manutencao da Casa</div><div class="card"><div class="card-body">';D.home.tasks.forEach(function(t){html+='<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">A cada '+t.interval+' '+t.unit+'</div></div><div class="task-actions">'+badge(t)+'<button class="btn-small log-task" data-sec="home" data-vid="" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button></div></div>';});return html+'</div></div>';}
+function renderBills(){var unpaid=D.bills.filter(function(b){return !b.paid;});var paid=D.bills.filter(function(b){return b.paid;});var total=unpaid.reduce(function(s,b){return s+parseFloat(b.value||0);},0);var html='<div class="row"><div class="section-title" style="margin:0">Contas e Despesas</div><button class="btn-primary" id="btnAddBill">+ Nova</button></div>';if(D.bills.length===0){return html+'<div class="empty">Nenhuma conta registrada.</div>';}function billHtml(b){return'<div class="bill-item'+(b.paid?' paid':'')+'"><input type="checkbox" class="toggle-bill" data-id="'+b.id+'"'+(b.paid?' checked':'')+'><div class="bill-info"><div class="bill-name'+(b.paid?' paid':'')+'">'+b.name+'</div><div class="bill-sub">'+(b.dueDate?'Vence: '+fmt(b.dueDate):'')+(b.category?' - '+b.category:'')+'</div></div>'+(b.value?'<div class="bill-value'+(b.paid?' paid':'')+'">R$ '+parseFloat(b.value).toFixed(2)+'</div>':'')+'<button class="del-bill" data-id="'+b.id+'" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px">X</button></div>';}if(unpaid.length>0){html+='<div class="section-sub" style="margin-top:0">Em aberto</div>';unpaid.forEach(function(b){html+=billHtml(b);});}if(paid.length>0){html+='<div class="section-sub">Pagas</div>';paid.forEach(function(b){html+=billHtml(b);});}html+='<div class="divider"></div><div class="total-row"><span style="color:#64748b;font-weight:600">Total em aberto</span><span style="font-weight:700;font-size:16px;color:#6c63ff">R$ '+total.toFixed(2)+'</span></div>';return html;}
+function renderHistory(){var html='<div class="section-title">Historico</div>';if(D.history.length===0)return html+'<div class="empty">Nenhuma manutencao registrada ainda.</div>';D.history.forEach(function(h){html+='<div class="hist-item"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:14px">'+h.task+'</div>'+(h.cost?'<div style="font-weight:700;color:#f59e0b">R$ '+parseFloat(h.cost).toFixed(2)+'</div>':'')+'</div><div style="color:#64748b;font-size:12px;margin-top:3px">'+h.category+' - '+fmt(h.date)+'</div>'+(h.notes?'<div style="color:#64748b;font-size:12px;font-style:italic;margin-top:3px">'+h.notes+'</div>':'')+'</div>';});return html;}
 function bindEvents(){
-  document.querySelectorAll(".nav-btn").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});
-      btn.classList.add("active");
-      currentTab=btn.getAttribute("data-tab");
-      render();
-    });
-  });
-  document.querySelectorAll(".log-task").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      openLogModal(btn.getAttribute("data-sec"),btn.getAttribute("data-vid"),parseInt(btn.getAttribute("data-tid")),btn.getAttribute("data-name"));
-    });
-  });
-  var bav=document.getElementById("btnAddVehicle");
-  if(bav)bav.addEventListener("click",openAddVehicleModal);
-  var bab=document.getElementById("btnAddBill");
-  if(bab)bab.addEventListener("click",openAddBillModal);
-  document.querySelectorAll(".toggle-bill").forEach(function(cb){
-    cb.addEventListener("change",function(){
-      var b=D.bills.find(function(b){return b.id===parseInt(cb.getAttribute("data-id"));});
-      if(b)b.paid=!b.paid;
-      save();render();
-    });
-  });
-  document.querySelectorAll(".del-bill").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      if(!confirm("Remover esta conta?"))return;
-      D.bills=D.bills.filter(function(b){return b.id!==parseInt(btn.getAttribute("data-id"));});
-      save();render();
-    });
-  });
+  document.querySelectorAll(".nav-btn").forEach(function(btn){btn.addEventListener("click",function(){document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});btn.classList.add("active");currentTab=btn.getAttribute("data-tab");render();});});
+  document.querySelectorAll(".log-task").forEach(function(btn){btn.addEventListener("click",function(){openLogModal(btn.getAttribute("data-sec"),btn.getAttribute("data-vid"),parseInt(btn.getAttribute("data-tid")),btn.getAttribute("data-name"));});});
+  var bav=document.getElementById("btnAddVehicle");if(bav)bav.addEventListener("click",openAddVehicleModal);
+  var bab=document.getElementById("btnAddBill");if(bab)bab.addEventListener("click",openAddBillModal);
+  document.querySelectorAll(".toggle-bill").forEach(function(cb){cb.addEventListener("change",function(){var b=D.bills.find(function(b){return b.id===parseInt(cb.getAttribute("data-id"));});if(b)b.paid=!b.paid;save();render();});});
+  document.querySelectorAll(".del-bill").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover?"))return;D.bills=D.bills.filter(function(b){return b.id!==parseInt(btn.getAttribute("data-id"));});save();render();});});
 }
-
 function closeModal(){document.getElementById("modalContainer").innerHTML="";}
-
-function openLogModal(sec,vid,tid,name){
-  var isV=sec==="vehicle";
-  document.getElementById("modalContainer").innerHTML=
-    '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
-    '<div class="modal-title">Registrar: '+name+'</div>'+
-    '<div class="field"><label>Data</label><input type="date" id="fDate" value="'+today()+'"></div>'+
-    (isV?'<div class="field"><label>Quilometragem (km)</label><input type="number" id="fKm" placeholder="Ex: 45000"></div>':'')+
-    '<div class="field"><label>Custo (R$)</label><input type="number" id="fCost" placeholder="Ex: 150.00" step="0.01"></div>'+
-    '<div class="field"><label>Observacoes</label><textarea id="fNotes" placeholder="Ex: Oleo 5W30 sintetico..."></textarea></div>'+
-    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSav">Salvar</button></div>'+
-    '</div></div>';
-  document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
-  document.getElementById("mCan").addEventListener("click",closeModal);
-  document.getElementById("mSav").addEventListener("click",function(){
-    var date=document.getElementById("fDate").value;
-    if(!date){alert("Informe a data!");return;}
-    var km=document.getElementById("fKm")?document.getElementById("fKm").value:"";
-    var cost=document.getElementById("fCost").value;
-    var notes=document.getElementById("fNotes").value;
-    var taskName="";
-    if(sec==="home"){
-      var t=D.home.tasks.find(function(t){return t.id===tid;});
-      if(t){t.lastDone=date;t.notes=notes;taskName=t.name;}
-    } else {
-      var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});
-      if(v){var t2=v.tasks.find(function(t){return t.id===tid;});if(t2){t2.lastDone=date;if(km)t2.lastKm=km;t2.notes=notes;taskName=t2.name;}}
-    }
-    D.history.unshift({id:Date.now(),date:date,task:taskName,
-      category:sec==="home"?"Casa":(D.vehicles.find(function(v){return v.id===parseInt(vid);})||{name:""}).name,
-      notes:notes,cost:cost});
-    save();closeModal();render();
-  });
-}
-
-function openAddVehicleModal(){
-  document.getElementById("modalContainer").innerHTML=
-    '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
-    '<div class="modal-title">Novo Veiculo</div>'+
-    '<div class="field"><label>Nome</label><input type="text" id="fVN" placeholder="Ex: Meu Carro"></div>'+
-    '<div class="field"><label>Modelo / Ano</label><input type="text" id="fVM" placeholder="Ex: Fiat Strada 2022"></div>'+
-    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavV">Adicionar</button></div>'+
-    '</div></div>';
-  document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
-  document.getElementById("mCan").addEventListener("click",closeModal);
-  document.getElementById("mSavV").addEventListener("click",function(){
-    var name=document.getElementById("fVN").value||"Novo Veiculo";
-    var model=document.getElementById("fVM").value||"";
-    var tasks=JSON.parse(JSON.stringify(DEFAULT.vehicles[0].tasks));
-    D.vehicles.push({id:Date.now(),name:name,model:model,icon:"&#128663;",tasks:tasks});
-    save();closeModal();render();
-  });
-}
-
-function openAddBillModal(){
-  document.getElementById("modalContainer").innerHTML=
-    '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
-    '<div class="modal-title">Nova Conta</div>'+
-    '<div class="field"><label>Nome da Conta</label><input type="text" id="fBN" placeholder="Ex: Troca de Oleo"></div>'+
-    '<div class="field"><label>Valor (R$)</label><input type="number" id="fBV" placeholder="Ex: 200.00" step="0.01"></div>'+
-    '<div class="field"><label>Vencimento</label><input type="date" id="fBD"></div>'+
-    '<div class="field"><label>Categoria</label><select id="fBC"><option value="">Selecione...</option><option>Veiculo</option><option>Casa</option><option>Seguro</option><option>IPTU/IPVA</option><option>Outro</option></select></div>'+
-    '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavB">Salvar</button></div>'+
-    '</div></div>';
-  document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
-  document.getElementById("mCan").addEventListener("click",closeModal);
-  document.getElementById("mSavB").addEventListener("click",function(){
-    var name=document.getElementById("fBN").value;
-    if(!name){alert("Informe o nome da conta!");return;}
-    D.bills.push({id:Date.now(),name:name,paid:false,
-      value:document.getElementById("fBV").value,
-      dueDate:document.getElementById("fBD").value,
-      category:document.getElementById("fBC").value});
-    save();closeModal();render();
-  });
-}
-
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("/manutencao/sw.js")
-    .catch(function(){});
-}
-
+function openLogModal(sec,vid,tid,name){var isV=sec==="vehicle";document.getElementById("modalContainer").innerHTML='<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">Registrar: '+name+'</div><div class="field"><label>Data</label><input type="date" id="fDate" value="'+today()+'"></div>'+(isV?'<div class="field"><label>Quilometragem (km)</label><input type="number" id="fKm" placeholder="Ex: 45000"></div>':'')+'<div class="field"><label>Custo (R$)</label><input type="number" id="fCost" placeholder="Ex: 150.00" step="0.01"></div><div class="field"><label>Observacoes</label><textarea id="fNotes" placeholder="Ex: Oleo 5W30..."></textarea></div><div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSav">Salvar</button></div></div></div>';document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});document.getElementById("mCan").addEventListener("click",closeModal);document.getElementById("mSav").addEventListener("click",function(){var date=document.getElementById("fDate").value;if(!date){alert("Informe a data!");return;}var km=document.getElementById("fKm")?document.getElementById("fKm").value:"";var cost=document.getElementById("fCost").value;var notes=document.getElementById("fNotes").value;var taskName="";if(sec==="home"){var t=D.home.tasks.find(function(t){return t.id===tid;});if(t){t.lastDone=date;t.notes=notes;taskName=t.name;}}else{var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v){var t2=v.tasks.find(function(t){return t.id===tid;});if(t2){t2.lastDone=date;if(km)t2.lastKm=km;t2.notes=notes;taskName=t2.name;}}}D.history.unshift({id:Date.now(),date:date,task:taskName,category:sec==="home"?"Casa":(D.vehicles.find(function(v){return v.id===parseInt(vid);})||{name:""}).name,notes:notes,cost:cost});save();closeModal();render();});}
+function openAddVehicleModal(){document.getElementById("modalContainer").innerHTML='<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">Novo Veiculo</div><div class="field"><label>Nome</label><input type="text" id="fVN" placeholder="Ex: Meu Carro"></div><div class="field"><label>Modelo / Ano</label><input type="text" id="fVM" placeholder="Ex: Fiat Strada 2022"></div><div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavV">Adicionar</button></div></div></div>';document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});document.getElementById("mCan").addEventListener("click",closeModal);document.getElementById("mSavV").addEventListener("click",function(){var name=document.getElementById("fVN").value||"Novo Veiculo";var model=document.getElementById("fVM").value||"";var tasks=JSON.parse(JSON.stringify(DEFAULT.vehicles[0].tasks));D.vehicles.push({id:Date.now(),name:name,model:model,icon:"car",tasks:tasks});save();closeModal();render();});}
+function openAddBillModal(){document.getElementById("modalContainer").innerHTML='<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">Nova Conta</div><div class="field"><label>Nome da Conta</label><input type="text" id="fBN" placeholder="Ex: Troca de Oleo"></div><div class="field"><label>Valor (R$)</label><input type="number" id="fBV" placeholder="Ex: 200.00" step="0.01"></div><div class="field"><label>Vencimento</label><input type="date" id="fBD"></div><div class="field"><label>Categoria</label><select id="fBC"><option value="">Selecione...</option><option>Veiculo</option><option>Casa</option><option>Seguro</option><option>IPTU/IPVA</option><option>Outro</option></select></div><div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavB">Salvar</button></div></div></div>';document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});document.getElementById("mCan").addEventListener("click",closeModal);document.getElementById("mSavB").addEventListener("click",function(){var name=document.getElementById("fBN").value;if(!name){alert("Informe o nome!");return;}D.bills.push({id:Date.now(),name:name,paid:false,value:document.getElementById("fBV").value,dueDate:document.getElementById("fBD").value,category:document.getElementById("fBC").value});save();closeModal();render();});}
+if("serviceWorker" in navigator){navigator.serviceWorker.register("/manutencao/sw.js").catch(function(){});}
 render();
 </script>
-
-
-</body></html>
+</body>
+</html>

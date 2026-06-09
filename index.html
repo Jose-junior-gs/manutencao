@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,14 +16,14 @@ button,input,select,textarea{font-family:inherit}
 .header-inner{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:900px;margin:0 auto}
 .header-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;color:#fff}
 .bottom-nav{background:#1a1d27;border-top:1px solid #2a2d3e;display:flex;position:fixed;bottom:0;left:0;right:0;z-index:99}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;background:none;border:none;border-top:2px solid transparent;cursor:pointer;color:#64748b;font-size:10px;font-weight:600;gap:3px;min-width:55px}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px 6px;background:none;border:none;border-top:2px solid transparent;cursor:pointer;color:#64748b;font-size:9px;font-weight:600;gap:2px;min-width:48px}
 .nav-btn.active{color:#6c63ff;border-top-color:#6c63ff}
-.nav-icon{font-size:18px}
+.nav-icon{font-size:17px}
 .content{max-width:900px;margin:0 auto;padding:20px 14px}
 .card{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;margin-bottom:16px}
 .card-header{padding:14px 18px;border-bottom:1px solid #2a2d3e;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.card-header-left{display:flex;align-items:center;gap:10px}
-.card-header-actions{display:flex;gap:8px}
+.card-header-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.card-header-actions{display:flex;gap:6px;flex-shrink:0}
 .card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;padding:16px}
@@ -42,8 +43,8 @@ button,input,select,textarea{font-family:inherit}
 .btn-primary{background:#6c63ff;color:#fff;border:none;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:14px}
 .btn-small{background:#6c63ff;color:#fff;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px;font-weight:600}
 .btn-outline{background:none;border:1px solid #2a2d3e;color:#64748b;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:14px}
-.btn-icon{background:none;border:1px solid #2a2d3e;color:#64748b;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px}
-.btn-icon:hover{border-color:#6c63ff;color:#6c63ff}
+.btn-icon{background:none;border:1px solid #2a2d3e;color:#64748b;border-radius:8px;padding:5px 8px;cursor:pointer;font-size:12px;white-space:nowrap}
+.btn-icon:active{border-color:#6c63ff;color:#6c63ff}
 .btn-danger-sm{background:none;border:none;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px}
 .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .section-title{font-size:20px;font-weight:700;margin-bottom:18px}
@@ -89,6 +90,25 @@ input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff;
 input:checked+.toggle-slider{background:#6c63ff22;border:1px solid #6c63ff}
 input:checked+.toggle-slider:before{transform:translateX(20px);background:#6c63ff}
 .welcome-box{background:#1a1d27;border:1px solid #6c63ff44;border-radius:16px;padding:32px 20px;text-align:center;margin-bottom:24px}
+/* Timeline */
+.timeline{padding:8px 0}
+.tl-item{display:flex;gap:12px;margin-bottom:0}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:#6c63ff;flex-shrink:0;margin-top:4px}
+.tl-dot.green{background:#22c55e}
+.tl-line{width:2px;background:#2a2d3e;flex:1;min-height:20px}
+.tl-content{flex:1;background:#0f1117;border-radius:10px;padding:10px 14px;margin-bottom:10px}
+.tl-date{font-size:11px;color:#64748b;margin-bottom:2px}
+.tl-name{font-weight:600;font-size:13px}
+.tl-detail{font-size:12px;color:#64748b;margin-top:2px}
+/* Backup box */
+.backup-box{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;padding:20px;margin-bottom:12px}
+.backup-title{font-weight:700;font-size:15px;margin-bottom:6px}
+.backup-sub{color:#64748b;font-size:13px;margin-bottom:14px;line-height:1.5}
+/* Vehicle tabs */
+.vtab-bar{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px}
+.vtab{background:#1a1d27;border:1px solid #2a2d3e;border-radius:20px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;color:#64748b;white-space:nowrap}
+.vtab.active{background:#6c63ff22;border-color:#6c63ff;color:#6c63ff}
 </style>
 </head>
 <body>
@@ -103,8 +123,8 @@ input:checked+.toggle-slider:before{transform:translateX(20px);background:#6c63f
   <button class="nav-btn" data-tab="vehicles"><span class="nav-icon">🚗</span>Veiculos</button>
   <button class="nav-btn" data-tab="home"><span class="nav-icon">🏠</span>Casa</button>
   <button class="nav-btn" data-tab="bills"><span class="nav-icon">💰</span>Contas</button>
-  <button class="nav-btn" data-tab="history"><span class="nav-icon">📋</span>Historico</button>
   <button class="nav-btn" data-tab="reports"><span class="nav-icon">📊</span>Relatorio</button>
+  <button class="nav-btn" data-tab="backup"><span class="nav-icon">💾</span>Backup</button>
 </nav>
 <div class="content" id="appContent"></div>
 <div id="modalContainer"></div>
@@ -117,7 +137,7 @@ var DEFAULT_TASKS=[
   {id:5,name:"Revisao Geral",interval:12,unit:"meses",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
   {id:6,name:"Alinhamento",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]}
 ];
-var DEFAULT_HOME_TASKS=[
+var DEFAULT_HOME=[
   {id:1,name:"Limpeza Caixa d Agua",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
   {id:2,name:"Limpeza Caixa de Gordura",interval:3,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
   {id:3,name:"Troca Filtro de Agua",interval:6,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]},
@@ -127,10 +147,11 @@ var DEFAULT_HOME_TASKS=[
   {id:7,name:"Limpeza Calhas",interval:12,unit:"meses",lastDone:"",notes:"",alarmDate:"",alarmActive:false,photos:[]}
 ];
 
-function load(){try{var s=localStorage.getItem("mnt_pro_v6");return s?JSON.parse(s):{vehicles:[],home:{tasks:JSON.parse(JSON.stringify(DEFAULT_HOME_TASKS))},history:[],bills:[]}}catch(e){return{vehicles:[],home:{tasks:JSON.parse(JSON.stringify(DEFAULT_HOME_TASKS))},history:[],bills:[]};}}
-function save(){try{localStorage.setItem("mnt_pro_v6",JSON.stringify(D))}catch(e){}}
+function load(){try{var s=localStorage.getItem("mnt_pro_v7");return s?JSON.parse(s):{vehicles:[],home:{tasks:JSON.parse(JSON.stringify(DEFAULT_HOME))},history:[],bills:[]}}catch(e){return{vehicles:[],home:{tasks:JSON.parse(JSON.stringify(DEFAULT_HOME))},history:[],bills:[]};}}
+function save(){try{localStorage.setItem("mnt_pro_v7",JSON.stringify(D))}catch(e){}}
 var D=load();
 var currentTab="dashboard";
+var selectedVehicleId=null;
 
 function daysAgo(d){if(!d)return null;return Math.floor((Date.now()-new Date(d))/86400000)}
 function daysUntil(d){if(!d)return null;return Math.ceil((new Date(d)-Date.now())/86400000)}
@@ -140,9 +161,8 @@ function badge(t){var s=status(t);if(s==="none")return'<span class="badge badge-
 function fmt(s){if(!s)return"";var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
 function today(){return new Date().toISOString().split("T")[0]}
 function allTasks(){var r=[];D.home.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:"Casa",sec:"home"}));});D.vehicles.forEach(function(v){v.tasks.forEach(function(t){r.push(Object.assign({},t,{cat:v.name,sec:"vehicle",vid:v.id}));});});return r;}
-function nextId(arr){return arr.length>0?Math.max.apply(null,arr.map(function(t){return t.id||0;}))+1:1;}
 
-function requestNotifPerm(){if("Notification" in window&&Notification.permission==="default"){Notification.requestPermission();}}
+function requestNotifPerm(){if("Notification" in window&&Notification.permission==="default")Notification.requestPermission();}
 function scheduleNotif(title,body,dateStr){if(!("Notification" in window)||Notification.permission!=="granted")return;var ms=new Date(dateStr).getTime()-Date.now();if(ms>0)setTimeout(function(){new Notification(title,{body:body});},Math.min(ms,2147483647));}
 function checkAlarms(){return allTasks().filter(function(t){var as=alarmStatus(t);return as==="fired"||as==="soon";});}
 
@@ -152,42 +172,34 @@ function render(){
   else if(currentTab==="vehicles")el.innerHTML=renderVehicles();
   else if(currentTab==="home")el.innerHTML=renderHome();
   else if(currentTab==="bills")el.innerHTML=renderBills();
-  else if(currentTab==="history")el.innerHTML=renderHistory();
   else if(currentTab==="reports")el.innerHTML=renderReports();
+  else if(currentTab==="backup")el.innerHTML=renderBackup();
   bindEvents();updatePill();
 }
-
 function updatePill(){var n=allTasks().filter(function(t){return status(t)==="over"||status(t)==="warn";}).length+checkAlarms().length;var p=document.getElementById("alertPill");if(!p)return;if(n>0){p.style.display="";p.textContent="! "+n;}else p.style.display="none";}
 
 function renderDash(){
-  var all=allTasks();
-  var over=all.filter(function(t){return status(t)==="over";});
-  var warn=all.filter(function(t){return status(t)==="warn";});
-  var none=all.filter(function(t){return !t.lastDone;});
-  var ok=all.filter(function(t){return t.lastDone&&status(t)==="ok";});
+  var all=allTasks(),over=all.filter(function(t){return status(t)==="over";}),warn=all.filter(function(t){return status(t)==="warn";}),none=all.filter(function(t){return !t.lastDone;}),ok=all.filter(function(t){return t.lastDone&&status(t)==="ok";});
   var fired=checkAlarms();
   var banner=fired.length>0?'<div class="alert-banner"><span style="font-size:24px">🔔</span><div class="alert-banner-text"><strong style="color:#ef4444">'+fired.length+' alarme(s) disparado(s)!</strong><br>'+fired.map(function(t){return t.name;}).join(", ")+'</div></div>':"";
   var att=over.concat(warn);
-  var attHtml=att.length===0?'<div class="empty">Tudo em dia! Nenhuma manutencao pendente.</div>':att.map(function(t){return'<div class="task-item" style="margin-bottom:8px"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">'+t.cat+'</div></div>'+badge(t)+'</div>';}).join("");
+  var attHtml=att.length===0?'<div class="empty">Tudo em dia!</div>':att.map(function(t){return'<div class="task-item" style="margin-bottom:8px"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">'+t.cat+'</div></div>'+badge(t)+'</div>';}).join("");
   return banner+'<div class="section-title">Painel Geral</div><div class="stats-grid"><div class="stat-card"><div class="stat-value" style="color:#ef4444">'+over.length+'</div><div class="stat-label">Atrasados</div></div><div class="stat-card"><div class="stat-value" style="color:#f59e0b">'+warn.length+'</div><div class="stat-label">Atencao</div></div><div class="stat-card"><div class="stat-value" style="color:#64748b">'+none.length+'</div><div class="stat-label">Nao registrados</div></div><div class="stat-card"><div class="stat-value" style="color:#22c55e">'+ok.length+'</div><div class="stat-label">Em dia</div></div></div><div class="section-sub">Itens que precisam de atencao</div>'+attHtml;
 }
 
 function taskItemHtml(t,sec,vid){
   var as=alarmStatus(t);
-  var alarmBadge=as==="fired"?'<span class="badge badge-over">🔔 Alarme!</span>':as==="soon"?'<span class="badge badge-warn">🔔 Em breve</span>':as==="active"?'<span class="badge badge-alarm">🔔 '+fmt(t.alarmDate)+'</span>':"";
-  var photos=t.photos&&t.photos.length>0?'<div style="color:#6c63ff;font-size:11px;margin-top:3px">📷 '+t.photos.length+' foto(s)</div>':"";
-  var delBtn='<button class="btn-danger-sm del-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'" title="Remover">🗑️</button>';
-  return'<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">Proximo: '+t.interval+' '+t.unit+(t.lastKm?' - Ultimo: '+t.lastKm+' km':'')+'</div>'+photos+'</div><div class="task-actions">'+badge(t)+alarmBadge+'<button class="btn-small log-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button>'+delBtn+'</div></div>';
+  var ab=as==="fired"?'<span class="badge badge-over">🔔 Alarme!</span>':as==="soon"?'<span class="badge badge-warn">🔔 Em breve</span>':as==="active"?'<span class="badge badge-alarm">🔔 '+fmt(t.alarmDate)+'</span>':"";
+  var ph=t.photos&&t.photos.length>0?'<div style="color:#6c63ff;font-size:11px;margin-top:3px">📷 '+t.photos.length+' foto(s)</div>':"";
+  return'<div class="task-item"><div class="task-info"><div class="task-name">'+t.name+'</div><div class="task-sub">Proximo: '+t.interval+' '+t.unit+(t.lastKm?' - Ultimo: '+t.lastKm+' km':'')+'</div>'+ph+'</div><div class="task-actions">'+badge(t)+ab+'<button class="btn-small log-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'" data-name="'+t.name+'">Registrar</button><button class="btn-danger-sm del-task" data-sec="'+sec+'" data-vid="'+(vid||'')+'" data-tid="'+t.id+'">🗑️</button></div></div>';
 }
 
 function renderVehicles(){
-  if(D.vehicles.length===0){
-    return'<div class="row"><div class="section-title" style="margin:0">Meus Veiculos</div><button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>'+
-    '<div class="welcome-box"><div style="font-size:48px;margin-bottom:12px">🚗</div><div style="font-weight:700;font-size:18px;margin-bottom:8px">Nenhum veiculo cadastrado</div><div style="color:#64748b;font-size:14px;margin-bottom:20px">Clique em "+ Novo" para adicionar seu primeiro veiculo</div></div>';
-  }
   var html='<div class="row"><div class="section-title" style="margin:0">Meus Veiculos</div><button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>';
+  if(D.vehicles.length===0)return html+'<div class="welcome-box"><div style="font-size:48px;margin-bottom:12px">🚗</div><div style="font-weight:700;font-size:18px;margin-bottom:8px">Nenhum veiculo cadastrado</div><div style="color:#64748b;font-size:14px;margin-bottom:20px">Clique em "+ Novo" para adicionar seu primeiro veiculo</div></div>';
   D.vehicles.forEach(function(v){
-    html+='<div class="card"><div class="card-header"><div class="card-header-left"><div><div style="font-weight:700;font-size:16px">🚗 '+v.name+'</div><div style="color:#64748b;font-size:13px">'+v.model+'</div></div></div><div class="card-header-actions"><button class="btn-icon edit-vehicle" data-vid="'+v.id+'" title="Editar">✏️ Editar</button><button class="btn-icon add-task-vehicle" data-vid="'+v.id+'" title="Nova tarefa">+ Tarefa</button><button class="btn-icon del-vehicle" data-vid="'+v.id+'" title="Remover veiculo" style="color:#ef4444;border-color:#ef444444">🗑️</button></div></div><div class="card-body">';
+    var vtotal=D.history.filter(function(h){return h.vehicleId===v.id;}).reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
+    html+='<div class="card"><div class="card-header"><div class="card-header-left"><div><div style="font-weight:700;font-size:15px">🚗 '+v.name+'</div><div style="color:#64748b;font-size:12px">'+v.model+(vtotal>0?' · R$ '+vtotal.toFixed(2)+' investidos':'')+'</div></div></div><div class="card-header-actions"><button class="btn-icon hist-vehicle" data-vid="'+v.id+'" data-vname="'+v.name+'">📋 Hist.</button><button class="btn-icon edit-vehicle" data-vid="'+v.id+'">✏️</button><button class="btn-icon add-task-vehicle" data-vid="'+v.id+'">+ Tarefa</button><button class="btn-icon del-vehicle" data-vid="'+v.id+'" style="color:#ef4444;border-color:#ef444444">🗑️</button></div></div><div class="card-body">';
     v.tasks.forEach(function(t){html+=taskItemHtml(t,"vehicle",v.id);});
     html+='</div></div>';
   });
@@ -195,31 +207,20 @@ function renderVehicles(){
 }
 
 function renderHome(){
-  var html='<div class="row"><div class="section-title" style="margin:0">🏠 Manutencao da Casa</div><button class="btn-primary" id="btnAddTaskHome">+ Tarefa</button></div><div class="card"><div class="card-body">';
+  var html='<div class="row"><div class="section-title" style="margin:0">🏠 Casa</div><button class="btn-primary" id="btnAddTaskHome">+ Tarefa</button></div><div class="card"><div class="card-body">';
   D.home.tasks.forEach(function(t){html+=taskItemHtml(t,"home",null);});
   return html+'</div></div>';
 }
 
 function renderBills(){
-  var unpaid=D.bills.filter(function(b){return !b.paid;});
-  var paid=D.bills.filter(function(b){return b.paid;});
+  var unpaid=D.bills.filter(function(b){return !b.paid;}),paid=D.bills.filter(function(b){return b.paid;});
   var total=unpaid.reduce(function(s,b){return s+parseFloat(b.value||0);},0);
-  var html='<div class="row"><div class="section-title" style="margin:0">Contas e Despesas</div><button class="btn-primary" id="btnAddBill">+ Nova</button></div>';
+  var html='<div class="row"><div class="section-title" style="margin:0">Contas</div><button class="btn-primary" id="btnAddBill">+ Nova</button></div>';
   if(D.bills.length===0)return html+'<div class="empty">Nenhuma conta registrada.</div>';
   function bh(b){return'<div class="bill-item'+(b.paid?" paid":"")+'"><input type="checkbox" class="toggle-bill" data-id="'+b.id+'"'+(b.paid?" checked":"")+'><div class="bill-info"><div class="bill-name'+(b.paid?" paid":"")+'">'+b.name+'</div><div class="bill-sub">'+(b.dueDate?"Vence: "+fmt(b.dueDate):"")+(b.category?" - "+b.category:"")+'</div></div>'+(b.value?'<div class="bill-value'+(b.paid?" paid":"")+'">R$ '+parseFloat(b.value).toFixed(2)+'</div>':"")+'<button class="del-bill" data-id="'+b.id+'" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px">X</button></div>';}
   if(unpaid.length>0){html+='<div class="section-sub" style="margin-top:0">Em aberto</div>';unpaid.forEach(function(b){html+=bh(b);});}
   if(paid.length>0){html+='<div class="section-sub">Pagas</div>';paid.forEach(function(b){html+=bh(b);});}
   html+='<div class="divider"></div><div class="total-row"><span style="color:#64748b;font-weight:600">Total em aberto</span><span style="font-weight:700;font-size:16px;color:#6c63ff">R$ '+total.toFixed(2)+'</span></div>';
-  return html;
-}
-
-function renderHistory(){
-  var html='<div class="section-title">📋 Historico</div>';
-  if(D.history.length===0)return html+'<div class="empty">Nenhuma manutencao registrada ainda.</div>';
-  D.history.forEach(function(h){
-    var photos=h.photos&&h.photos.length>0?'<div class="photo-grid">'+h.photos.map(function(p){return'<img class="photo-thumb" src="'+p+'">';}).join("")+'</div>':"";
-    html+='<div class="hist-item"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:14px">'+h.task+'</div>'+(h.cost?'<div style="font-weight:700;color:#f59e0b">R$ '+parseFloat(h.cost).toFixed(2)+'</div>':'')+'</div><div style="color:#64748b;font-size:12px;margin-top:3px">'+h.category+' - '+fmt(h.date)+'</div>'+(h.notes?'<div style="color:#64748b;font-size:12px;font-style:italic;margin-top:3px">'+h.notes+'</div>':'')+photos+'</div>';
-  });
   return html;
 }
 
@@ -237,28 +238,118 @@ function renderReports(){
   if(catHtml)html+='<div class="section-sub">Por categoria</div><div class="card" style="padding:16px">'+catHtml+'</div>';
   if(mHtml)html+='<div class="section-sub">Ultimos 6 meses</div><div class="card" style="padding:16px">'+mHtml+'</div>';
   if(!catHtml&&!mHtml)html+='<div class="empty">Nenhum gasto registrado ainda.</div>';
-  html+='<div class="section-sub">Exportar</div><div class="card" style="padding:16px"><button class="btn-primary" id="btnExportPDF" style="width:100%">📄 Exportar Relatorio PDF</button></div>';
+  html+='<div class="section-sub">Exportar</div><div class="card" style="padding:16px"><button class="btn-primary" id="btnExportPDF" style="width:100%;margin-bottom:10px">📄 Exportar Relatorio Geral PDF</button>';
+  if(D.vehicles.length>0){html+='<div class="section-sub" style="margin-top:8px">Historico por veiculo</div>';D.vehicles.forEach(function(v){html+='<button class="btn-outline export-vehicle-pdf" data-vid="'+v.id+'" data-vname="'+v.name+'" style="width:100%;margin-bottom:8px;text-align:left">🚗 '+v.name+' - Exportar PDF</button>';});}
+  html+='</div>';
   return html;
 }
 
-function exportPDF(){
+function renderBackup(){
+  var size=0;try{var s=localStorage.getItem("mnt_pro_v7");size=s?Math.round(s.length/1024):0;}catch(e){}
+  return'<div class="section-title">💾 Backup e Restauracao</div>'+
+    '<div class="backup-box"><div class="backup-title">📤 Exportar Backup</div><div class="backup-sub">Salva todos os seus dados em um arquivo. Use para transferir para outro celular ou guardar uma copia de seguranca.<br><br>Dados atuais: ~'+size+'KB</div><button class="btn-primary" id="btnExportBackup" style="width:100%">💾 Exportar Backup (JSON)</button></div>'+
+    '<div class="backup-box"><div class="backup-title">📥 Importar Backup</div><div class="backup-sub">Restaura seus dados a partir de um arquivo de backup exportado anteriormente. Seus dados atuais serao substituidos.</div><input type="file" id="backupFile" accept=".json" style="display:none"><button class="btn-outline" id="btnImportBackup" style="width:100%">📂 Selecionar arquivo de backup</button></div>'+
+    '<div class="backup-box" style="border-color:#ef444444"><div class="backup-title" style="color:#ef4444">⚠️ Limpar todos os dados</div><div class="backup-sub">Remove todos os veiculos, historico, contas e configuracoes. Esta acao nao pode ser desfeita.</div><button class="btn-icon" id="btnClearData" style="width:100%;color:#ef4444;border-color:#ef444444;padding:10px">🗑️ Limpar tudo</button></div>';
+}
+
+function exportBackup(){
+  var json=JSON.stringify(D,null,2);
+  var blob=new Blob([json],{type:"application/json"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");
+  a.href=url;a.download="manutencao-backup-"+today()+".json";
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.createObjectURL(blob);
+}
+
+function importBackup(file){
+  var r=new FileReader();
+  r.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data.vehicles||!data.home||!data.history)throw new Error("Formato invalido");
+      if(!confirm("Isso vai substituir todos os seus dados atuais. Confirma?"))return;
+      D=data;save();render();
+      alert("Backup restaurado com sucesso!");
+    }catch(err){alert("Arquivo invalido. Selecione um backup exportado pelo ManutencaoPRO.");}
+  };
+  r.readAsText(file);
+}
+
+function exportVehiclePDF(vid,vname){
+  var v=D.vehicles.find(function(v){return v.id===vid;});
+  var history=D.history.filter(function(h){return h.vehicleId===vid;}).sort(function(a,b){return a.date>b.date?1:-1;});
+  var total=history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
+  var rows=history.map(function(h){return'<tr><td>'+fmt(h.date)+'</td><td>'+h.task+'</td><td>'+(h.km||"-")+'</td><td>'+(h.notes||"-")+'</td><td>'+(h.cost?'R$ '+parseFloat(h.cost).toFixed(2):"-")+'</td></tr>';}).join("");
+  var tasks=v?v.tasks.map(function(t){return'<tr><td>'+t.name+'</td><td>A cada '+t.interval+' '+t.unit+'</td><td>'+(t.lastDone?fmt(t.lastDone):"Nao realizado")+'</td><td>'+(t.lastKm?t.lastKm+" km":"-")+'</td></tr>';}).join(""):"";
+  var w=window.open("","_blank");
+  if(w){w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Historico - '+vname+'</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#6c63ff}h2{color:#444;font-size:16px;margin:24px 0 8px}table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px}th{background:#6c63ff;color:#fff;padding:10px;text-align:left}td{padding:9px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}.total{font-size:18px;font-weight:700;color:#6c63ff;margin-top:16px}.info{color:#888;font-size:13px;margin-bottom:24px}</style></head><body>'+
+    '<h1>🔧 Historico de Manutencao</h1>'+
+    '<div class="info"><strong>Veiculo:</strong> '+vname+(v?' - '+v.model:'')+'<br><strong>Relatorio gerado em:</strong> '+fmt(today())+'</div>'+
+    '<h2>Manutencoes Realizadas</h2>'+
+    (rows?'<table><tr><th>Data</th><th>Servico</th><th>KM</th><th>Observacoes</th><th>Custo</th></tr>'+rows+'</table>':'<p style="color:#888">Nenhuma manutencao registrada.</p>')+
+    '<div class="total">Total investido: R$ '+total.toFixed(2)+'</div>'+
+    '<h2>Status Atual das Manutencoes</h2>'+
+    (tasks?'<table><tr><th>Servico</th><th>Intervalo</th><th>Ultima Realizacao</th><th>KM</th></tr>'+tasks+'</table>':'')+'</body></html>');
+    w.document.close();setTimeout(function(){w.print();},500);}
+}
+
+function exportGeneralPDF(){
   var total=D.history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
   var rows=D.history.map(function(h){return'<tr><td>'+fmt(h.date)+'</td><td>'+h.task+'</td><td>'+h.category+'</td><td>'+(h.notes||"-")+'</td><td>'+(h.cost?'R$ '+parseFloat(h.cost).toFixed(2):"-")+'</td></tr>';}).join("");
   var w=window.open("","_blank");
-  if(w){w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatorio ManutencaoPRO</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#6c63ff}table{width:100%;border-collapse:collapse;font-size:13px;margin-top:20px}th{background:#6c63ff;color:#fff;padding:10px;text-align:left}td{padding:9px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}.total{margin-top:20px;font-size:18px;font-weight:700;color:#6c63ff}</style></head><body><h1>🔧 ManutencaoPRO</h1><p style="color:#888">Relatorio gerado em '+fmt(today())+'</p><table><tr><th>Data</th><th>Manutencao</th><th>Categoria</th><th>Observacoes</th><th>Custo</th></tr>'+rows+'</table><div class="total">Total: R$ '+total.toFixed(2)+'</div></body></html>');w.document.close();setTimeout(function(){w.print();},500);}
+  if(w){w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatorio ManutencaoPRO</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#6c63ff}table{width:100%;border-collapse:collapse;font-size:13px;margin-top:20px}th{background:#6c63ff;color:#fff;padding:10px;text-align:left}td{padding:9px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}.total{margin-top:20px;font-size:18px;font-weight:700;color:#6c63ff}</style></head><body><h1>🔧 ManutencaoPRO</h1><p style="color:#888">Gerado em '+fmt(today())+'</p><table><tr><th>Data</th><th>Servico</th><th>Categoria</th><th>Observacoes</th><th>Custo</th></tr>'+rows+'</table><div class="total">Total: R$ '+total.toFixed(2)+'</div></body></html>');w.document.close();setTimeout(function(){w.print();},500);}
+}
+
+function openVehicleHistory(vid,vname){
+  var history=D.history.filter(function(h){return h.vehicleId===vid;}).sort(function(a,b){return a.date<b.date?1:-1;});
+  var total=history.reduce(function(s,h){return s+parseFloat(h.cost||0);},0);
+  var tlHtml=history.length===0?'<div class="empty">Nenhuma manutencao registrada para este veiculo.<br>Use o botao "Registrar" nas tarefas para adicionar historico.</div>':
+    '<div class="timeline">'+history.map(function(h,i){
+      var isLast=i===history.length-1;
+      return'<div class="tl-item"><div class="tl-left"><div class="tl-dot '+(h.cost?"green":"")+'"></div>'+(isLast?"":"<div class=\"tl-line\"></div>")+'</div><div class="tl-content"><div class="tl-date">'+fmt(h.date)+(h.km?' · '+h.km+' km':'')+'</div><div class="tl-name">'+h.task+'</div><div class="tl-detail">'+(h.notes||"")+(h.cost?' · R$ '+parseFloat(h.cost).toFixed(2):'')+'</div></div></div>';
+    }).join("")+'</div>';
+
+  // Gastos por categoria do veiculo
+  var bycat={};history.forEach(function(h){if(!h.cost)return;var c=h.task;if(!bycat[c])bycat[c]=0;bycat[c]+=parseFloat(h.cost||0);});
+  var maxc=Math.max.apply(null,Object.values(bycat).concat([1]));
+  var catHtml=Object.keys(bycat).map(function(c){var v=bycat[c];return'<div class="chart-bar-wrap"><div class="chart-bar-label"><span>'+c+'</span><span style="color:#e2e8f0;font-weight:600">R$ '+v.toFixed(2)+'</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:'+Math.round(v/maxc*100)+'%"></div></div></div>';}).join("");
+
+  document.getElementById("modalContainer").innerHTML=
+    '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">'+
+    '<div class="modal-title" style="margin:0">📋 '+vname+'</div>'+
+    '<button class="btn-icon" id="btnExpVPDF">📄 PDF</button></div>'+
+    '<div class="card" style="padding:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">'+
+    '<div><div style="color:#64748b;font-size:12px">Total investido</div><div style="font-size:22px;font-weight:800;color:#6c63ff">R$ '+total.toFixed(2)+'</div></div>'+
+    '<div><div style="color:#64748b;font-size:12px">Manutencoes</div><div style="font-size:22px;font-weight:800;color:#22c55e">'+history.length+'</div></div></div>'+
+    (catHtml?'<div class="section-sub">Gastos por servico</div><div class="card" style="padding:14px;margin-bottom:16px">'+catHtml+'</div>':'')+
+    '<div class="section-sub">Linha do tempo</div>'+tlHtml+
+    '<div class="btn-row"><button class="btn-primary" style="flex:1" id="mCan">Fechar</button></div>'+
+    '</div></div>';
+  document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
+  document.getElementById("mCan").addEventListener("click",closeModal);
+  document.getElementById("btnExpVPDF").addEventListener("click",function(){exportVehiclePDF(vid,vname);});
 }
 
 function bindEvents(){
   document.querySelectorAll(".nav-btn").forEach(function(btn){btn.addEventListener("click",function(){document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});btn.classList.add("active");currentTab=btn.getAttribute("data-tab");render();});});
   document.querySelectorAll(".log-task").forEach(function(btn){btn.addEventListener("click",function(){openLogModal(btn.getAttribute("data-sec"),btn.getAttribute("data-vid"),parseInt(btn.getAttribute("data-tid")),btn.getAttribute("data-name"));});});
-  document.querySelectorAll(".del-task").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover esta tarefa?"))return;var sec=btn.getAttribute("data-sec"),vid=btn.getAttribute("data-vid"),tid=parseInt(btn.getAttribute("data-tid"));if(sec==="home"){D.home.tasks=D.home.tasks.filter(function(t){return t.id!==tid;});}else{var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v)v.tasks=v.tasks.filter(function(t){return t.id!==tid;});}save();render();});});
-  document.querySelectorAll(".del-vehicle").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover este veiculo e todas as suas tarefas?"))return;D.vehicles=D.vehicles.filter(function(v){return v.id!==parseInt(btn.getAttribute("data-vid"));});save();render();});});
+  document.querySelectorAll(".del-task").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover esta tarefa?"))return;var sec=btn.getAttribute("data-sec"),vid=btn.getAttribute("data-vid"),tid=parseInt(btn.getAttribute("data-tid"));if(sec==="home")D.home.tasks=D.home.tasks.filter(function(t){return t.id!==tid;});else{var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v)v.tasks=v.tasks.filter(function(t){return t.id!==tid;});}save();render();});});
+  document.querySelectorAll(".del-vehicle").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover este veiculo?"))return;D.vehicles=D.vehicles.filter(function(v){return v.id!==parseInt(btn.getAttribute("data-vid"));});save();render();});});
   document.querySelectorAll(".edit-vehicle").forEach(function(btn){btn.addEventListener("click",function(){openEditVehicleModal(parseInt(btn.getAttribute("data-vid")));});});
   document.querySelectorAll(".add-task-vehicle").forEach(function(btn){btn.addEventListener("click",function(){openAddTaskModal("vehicle",parseInt(btn.getAttribute("data-vid")));});});
-  var btnAddV=document.getElementById("btnAddVehicle");if(btnAddV)btnAddV.addEventListener("click",openAddVehicleModal);
-  var btnAddTH=document.getElementById("btnAddTaskHome");if(btnAddTH)btnAddTH.addEventListener("click",function(){openAddTaskModal("home",null);});
-  var btnAddB=document.getElementById("btnAddBill");if(btnAddB)btnAddB.addEventListener("click",openAddBillModal);
-  var btnExp=document.getElementById("btnExportPDF");if(btnExp)btnExp.addEventListener("click",exportPDF);
+  document.querySelectorAll(".hist-vehicle").forEach(function(btn){btn.addEventListener("click",function(){openVehicleHistory(parseInt(btn.getAttribute("data-vid")),btn.getAttribute("data-vname"));});});
+  document.querySelectorAll(".export-vehicle-pdf").forEach(function(btn){btn.addEventListener("click",function(){exportVehiclePDF(parseInt(btn.getAttribute("data-vid")),btn.getAttribute("data-vname"));});});
+  var b;
+  b=document.getElementById("btnAddVehicle");if(b)b.addEventListener("click",openAddVehicleModal);
+  b=document.getElementById("btnAddTaskHome");if(b)b.addEventListener("click",function(){openAddTaskModal("home",null);});
+  b=document.getElementById("btnAddBill");if(b)b.addEventListener("click",openAddBillModal);
+  b=document.getElementById("btnExportPDF");if(b)b.addEventListener("click",exportGeneralPDF);
+  b=document.getElementById("btnExportBackup");if(b)b.addEventListener("click",exportBackup);
+  b=document.getElementById("btnImportBackup");if(b)b.addEventListener("click",function(){document.getElementById("backupFile").click();});
+  b=document.getElementById("backupFile");if(b)b.addEventListener("change",function(){if(this.files[0])importBackup(this.files[0]);});
+  b=document.getElementById("btnClearData");if(b)b.addEventListener("click",function(){if(!confirm("Tem certeza? Todos os dados serao apagados!"))return;if(!confirm("Ultima confirmacao: apagar tudo?"))return;localStorage.removeItem("mnt_pro_v7");D=load();render();alert("Dados apagados.");});
   document.querySelectorAll(".toggle-bill").forEach(function(cb){cb.addEventListener("change",function(){var b=D.bills.find(function(b){return b.id===parseInt(cb.getAttribute("data-id"));});if(b)b.paid=!b.paid;save();render();});});
   document.querySelectorAll(".del-bill").forEach(function(btn){btn.addEventListener("click",function(){if(!confirm("Remover?"))return;D.bills=D.bills.filter(function(b){return b.id!==parseInt(btn.getAttribute("data-id"));});save();render();});});
 }
@@ -271,22 +362,18 @@ function openLogModal(sec,vid,tid,name){
   if(sec==="home")task=D.home.tasks.find(function(t){return t.id===tid;});
   else{var v=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v)task=v.tasks.find(function(t){return t.id===tid;});}
   var ci=task?task.interval:5000,cu=task?task.unit:"km";
-  var uOpts='<option value="km"'+(cu==="km"?" selected":"")+'>km</option><option value="meses"'+(cu==="meses"?" selected":"")+'>meses</option>';
-  if(!isV)uOpts='<option value="meses" selected>meses</option>';
+  var uOpts=isV?'<option value="km"'+(cu==="km"?" selected":"")+'>km</option><option value="meses"'+(cu==="meses"?" selected":"")+'>meses</option>':'<option value="meses" selected>meses</option>';
   document.getElementById("modalContainer").innerHTML=
     '<div class="modal-overlay" id="mOv"><div class="modal-box">'+
     '<div class="modal-title">✅ Registrar: '+name+'</div>'+
     '<div class="field-row"><div class="field"><label>Data</label><input type="date" id="fDate" value="'+today()+'"></div>'+(isV?'<div class="field"><label>KM Atual</label><input type="number" id="fKm" placeholder="Ex: 45000" value="'+(task&&task.lastKm?task.lastKm:'')+'"></div>':'')+'</div>'+
     '<div class="field-row"><div class="field"><label>Proximo intervalo</label><input type="number" id="fInterval" value="'+ci+'"></div><div class="field"><label>Unidade</label><select id="fUnit">'+uOpts+'</select></div></div>'+
     '<div class="field"><label>Custo (R$)</label><input type="number" id="fCost" placeholder="0.00" step="0.01"></div>'+
-    '<div class="field"><label>Observacoes</label><textarea id="fNotes" placeholder="Ex: Oleo 5W30 sintetico..."></textarea></div>'+
+    '<div class="field"><label>Observacoes</label><textarea id="fNotes" placeholder="Ex: Oleo 5W30 sintetico, filtro trocado..."></textarea></div>'+
     '<div class="field"><label>📷 Foto (nota fiscal / servico)</label><input type="file" id="fPhoto" accept="image/*" multiple style="color:#e2e8f0;padding:8px 0"></div>'+
     '<div class="alarm-box"><div class="alarm-box-title">🔔 Alarme Lembrete</div>'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px;color:#e2e8f0">Ativar alarme para verificar</span>'+
-    '<label class="toggle-switch"><input type="checkbox" id="fAlarmActive"'+(task&&task.alarmActive?" checked":"")+'><span class="toggle-slider"></span></label></div>'+
-    '<div id="alarmDateField" style="display:'+(task&&task.alarmActive?"block":"none")+'">'+
-    '<div class="field" style="margin:0"><label>Me avisar em</label><input type="date" id="fAlarmDate" value="'+(task&&task.alarmDate?task.alarmDate:'')+'"></div>'+
-    '<div style="color:#64748b;font-size:11px;margin-top:6px">O app vai te notificar nessa data para verificar</div></div></div>'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px">Ativar alarme para verificar</span><label class="toggle-switch"><input type="checkbox" id="fAlarmActive"'+(task&&task.alarmActive?" checked":"")+'><span class="toggle-slider"></span></label></div>'+
+    '<div id="alarmDateField" style="display:'+(task&&task.alarmActive?"block":"none")+'"><div class="field" style="margin:0"><label>Me avisar em</label><input type="date" id="fAlarmDate" value="'+(task&&task.alarmDate?task.alarmDate:'')+'"></div><div style="color:#64748b;font-size:11px;margin-top:6px">Voce recebera uma notificacao nessa data</div></div></div>'+
     '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSav">Salvar</button></div></div></div>';
   document.getElementById("fAlarmActive").addEventListener("change",function(){document.getElementById("alarmDateField").style.display=this.checked?"block":"none";});
   document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
@@ -302,11 +389,12 @@ function openLogModal(sec,vid,tid,name){
     var alarmDate=document.getElementById("fAlarmDate")?document.getElementById("fAlarmDate").value:"";
     var photoFiles=document.getElementById("fPhoto").files;
     var taskName="";
+    var vehicleId=isV?parseInt(vid):null;
     function finalize(photos){
       if(sec==="home"){var t=D.home.tasks.find(function(t){return t.id===tid;});if(t){t.lastDone=date;t.notes=notes;t.interval=interval;t.unit=unit;t.alarmActive=alarmActive;t.alarmDate=alarmDate;if(!t.photos)t.photos=[];t.photos=t.photos.concat(photos);taskName=t.name;}}
       else{var v2=D.vehicles.find(function(v){return v.id===parseInt(vid);});if(v2){var t2=v2.tasks.find(function(t){return t.id===tid;});if(t2){t2.lastDone=date;if(km)t2.lastKm=km;t2.notes=notes;t2.interval=interval;t2.unit=unit;t2.alarmActive=alarmActive;t2.alarmDate=alarmDate;if(!t2.photos)t2.photos=[];t2.photos=t2.photos.concat(photos);taskName=t2.name;}}}
       if(alarmActive&&alarmDate)scheduleNotif("🔔 ManutencaoPRO","Hora de verificar: "+taskName,alarmDate);
-      D.history.unshift({id:Date.now(),date:date,task:taskName,category:sec==="home"?"Casa":(D.vehicles.find(function(v){return v.id===parseInt(vid);})||{name:""}).name,notes:notes,cost:cost,photos:photos});
+      D.history.unshift({id:Date.now(),date:date,task:taskName,vehicleId:vehicleId,category:sec==="home"?"Casa":(D.vehicles.find(function(v){return v.id===parseInt(vid);})||{name:""}).name,notes:notes,cost:cost,km:km,photos:photos});
       save();closeModal();render();
     }
     if(photoFiles&&photoFiles.length>0){var photos=[],loaded=0;Array.from(photoFiles).forEach(function(file){var r=new FileReader();r.onload=function(e){photos.push(e.target.result);loaded++;if(loaded===photoFiles.length)finalize(photos);};r.readAsDataURL(file);});}
@@ -324,8 +412,7 @@ function openAddVehicleModal(){
   document.getElementById("mCan").addEventListener("click",closeModal);
   document.getElementById("mSavV").addEventListener("click",function(){
     var name=document.getElementById("fVN").value;if(!name){alert("Informe o nome!");return;}
-    var model=document.getElementById("fVM").value||"";
-    D.vehicles.push({id:Date.now(),name:name,model:model,tasks:JSON.parse(JSON.stringify(DEFAULT_TASKS))});
+    D.vehicles.push({id:Date.now(),name:name,model:document.getElementById("fVM").value||"",tasks:JSON.parse(JSON.stringify(DEFAULT_TASKS))});
     save();closeModal();render();
   });
 }
@@ -341,25 +428,23 @@ function openEditVehicleModal(vid){
   document.getElementById("mCan").addEventListener("click",closeModal);
   document.getElementById("mSavV").addEventListener("click",function(){
     var name=document.getElementById("fVN").value;if(!name){alert("Informe o nome!");return;}
-    v.name=name;v.model=document.getElementById("fVM").value||"";
-    save();closeModal();render();
+    v.name=name;v.model=document.getElementById("fVM").value||"";save();closeModal();render();
   });
 }
 
 function openAddTaskModal(sec,vid){
   document.getElementById("modalContainer").innerHTML=
-    '<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">+ Nova Tarefa</div>'+
-    '<div class="field"><label>Nome da Tarefa</label><input type="text" id="fTN" placeholder="Ex: Palheta do Vidro, Oleo da Caixa..."></div>'+
-    '<div class="field-row"><div class="field"><label>Intervalo</label><input type="number" id="fTI" value="6" placeholder="Ex: 10000"></div>'+
+    '<div class="modal-overlay" id="mOv"><div class="modal-box"><div class="modal-title">+ Nova Tarefa de Manutencao</div>'+
+    '<div class="field"><label>Nome da Tarefa</label><input type="text" id="fTN" placeholder="Ex: Palheta, Oleo da Caixa, Cano de Descarga..."></div>'+
+    '<div class="field-row"><div class="field"><label>Intervalo</label><input type="number" id="fTI" value="'+(sec==="home"?"6":"10000")+'"></div>'+
     '<div class="field"><label>Unidade</label><select id="fTU"><option value="km">km</option><option value="meses">meses</option></select></div></div>'+
     '<div class="btn-row"><button class="btn-outline" style="flex:1" id="mCan">Cancelar</button><button class="btn-primary" style="flex:1" id="mSavT">Adicionar</button></div></div></div>';
+  if(sec==="home")document.getElementById("fTU").value="meses";
   document.getElementById("mOv").addEventListener("click",function(e){if(e.target===this)closeModal();});
   document.getElementById("mCan").addEventListener("click",closeModal);
   document.getElementById("mSavT").addEventListener("click",function(){
-    var name=document.getElementById("fTN").value;if(!name){alert("Informe o nome da tarefa!");return;}
-    var interval=parseInt(document.getElementById("fTI").value)||6;
-    var unit=document.getElementById("fTU").value;
-    var newTask={id:Date.now(),name:name,interval:interval,unit:unit,lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]};
+    var name=document.getElementById("fTN").value;if(!name){alert("Informe o nome!");return;}
+    var newTask={id:Date.now(),name:name,interval:parseInt(document.getElementById("fTI").value)||6,unit:document.getElementById("fTU").value,lastDone:"",lastKm:"",notes:"",alarmDate:"",alarmActive:false,photos:[]};
     if(sec==="home")D.home.tasks.push(newTask);
     else{var v=D.vehicles.find(function(v){return v.id===vid;});if(v)v.tasks.push(newTask);}
     save();closeModal();render();

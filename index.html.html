@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///C:/Users/junio/Downloads/manutencao-pwa_3.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0f1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ManutençãoPRO">
+<title>ManutençãoPRO</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0f1117;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:140px}
+button,input,select,textarea{font-family:inherit}
+.header{background:#1a1d27;border-bottom:1px solid #2a2d3e;padding:0 16px;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:900px;margin:0 auto}
+.header-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;color:#fff}
+.bottom-nav{background:#1a1d27;border-top:1px solid #2a2d3e;display:flex;position:fixed;bottom:60px;left:0;right:0;z-index:99;overflow-x:auto}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:#64748b;font-size:10px;font-weight:600;gap:3px;min-width:60px;transition:color .2s}
+.nav-btn.active{color:#6c63ff;border-bottom-color:#6c63ff}
+.nav-icon{font-size:20px}
+.content{max-width:900px;margin:0 auto;padding:20px 14px}
+.card{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;margin-bottom:16px}
+.card-header{padding:14px 18px;border-bottom:1px solid #2a2d3e;display:flex;align-items:center;gap:10px}
+.card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:#1a1d27;border:1px solid #2a2d3e;border-radius:14px;padding:16px}
+.stat-value{font-size:26px;font-weight:800}
+.stat-label{color:#64748b;font-size:12px;margin-top:4px}
+.task-item{background:#0f1117;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.task-info{flex:1;min-width:0}
+.task-name{font-weight:600;font-size:14px}
+.task-sub{color:#64748b;font-size:12px;margin-top:2px}
+.task-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.badge{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-ok{background:#22c55e22;color:#22c55e}
+.badge-warn{background:#f59e0b22;color:#f59e0b}
+.badge-over{background:#ef444422;color:#ef4444}
+.badge-none{background:#1e293b;color:#64748b}
+.btn-primary{background:#6c63ff;color:#fff;border:none;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:14px}
+.btn-small{background:#6c63ff;color:#fff;border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:600}
+.btn-outline{background:none;border:1px solid #2a2d3e;color:#64748b;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:14px}
+.row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-size:20px;font-weight:700;margin-bottom:18px}
+.section-sub{font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:16px}
+.modal-overlay{position:fixed;inset:0;background:#000a;z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal-box{background:#1a1d27;border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:500px;border:1px solid #2a2d3e;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:18px}
+.field{margin-bottom:14px}
+.field label{display:block;color:#64748b;font-size:11px;font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.8px}
+.field input,.field select,.field textarea{width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;padding:11px 12px;color:#e2e8f0;font-size:14px;outline:none}
+.field textarea{resize:none;height:72px}
+.btn-row{display:flex;gap:10px;margin-top:12px}
+.bill-item{background:#1a1d27;border:1px solid #2a2d3e;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.bill-item.paid{border-color:#22c55e44}
+.bill-name{font-weight:600;font-size:14px}
+.bill-name.paid{text-decoration:line-through;color:#64748b}
+.bill-sub{color:#64748b;font-size:12px;margin-top:2px}
+.bill-info{flex:1;min-width:0}
+.bill-value{font-weight:700;font-size:15px;color:#f59e0b;flex-shrink:0}
+.bill-value.paid{color:#22c55e}
+.hist-item{background:#1a1d27;border:1px solid #2a2d3e;border-radius:12px;padding:14px 16px;margin-bottom:8px}
+.empty{background:#1a1d27;border:1px solid #2a2d3e;border-radius:12px;padding:32px;text-align:center;color:#64748b;line-height:1.7}
+.alert-pill{background:#ef444422;color:#ef4444;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600}
+input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff;flex-shrink:0}
+.icon-grid{display:flex;gap:8px;flex-wrap:wrap}
+.icon-btn{font-size:22px;background:#0f1117;border:2px solid #2a2d3e;border-radius:10px;padding:6px 10px;cursor:pointer}
+.icon-btn.sel{border-color:#6c63ff;background:#6c63ff22}
+.divider{height:1px;background:#2a2d3e;margin:12px 0}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-title"><span>🔧</span> ManutençãoPRO</div>
+    <div id="alertPill" style="display:none" class="alert-pill"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav" id="topNav">
+  <button class="nav-btn active" data-tab="dashboard"><span class="nav-icon">⊞</span>Painel</button>
+  <button class="nav-btn" data-tab="vehicles"><span class="nav-icon">🚗</span>Veículos</button>
+  <button class="nav-btn" data-tab="home"><span class="nav-icon">🏠</span>Casa</button>
+  <button class="nav-btn" data-tab="bills"><span class="nav-icon">💰</span>Contas</button>
+  <button class="nav-btn" data-tab="history"><span class="nav-icon">📋</span>Histórico</button>
+</nav>
+
+<div class="content" id="appContent">
+    <div class="section-title">Painel Geral</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value" style="color:#ef4444">🔴 0</div><div class="stat-label">Atrasados</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#f59e0b">🟡 0</div><div class="stat-label">Atenção</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#64748b">⚪ 13</div><div class="stat-label">Não registrados</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#22c55e">🟢 0</div><div class="stat-label">Em dia</div></div>
+    </div>
+    <div class="section-sub">Itens que precisam de atenção</div>
+    <div class="empty">✅ Tudo em dia!<br><small>Nenhuma manutenção pendente.</small></div></div>
+<div id="modalContainer"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────
+const DEFAULT = {
+  vehicles:[{id:1,name:"Meu Carro",model:"Informe o modelo",icon:"🚗",tasks:[
+    {id:1,name:"Troca de Óleo",interval:5000,unit:"km",lastDone:"",lastKm:"",notes:""},
+    {id:2,name:"Filtro de Ar",interval:15000,unit:"km",lastDone:"",lastKm:"",notes:""},
+    {id:3,name:"Rodízio de Pneus",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:""},
+    {id:4,name:"Pastilha de Freio",interval:30000,unit:"km",lastDone:"",lastKm:"",notes:""},
+    {id:5,name:"Revisão Geral",interval:12,unit:"meses",lastDone:"",lastKm:"",notes:""},
+    {id:6,name:"Alinhamento/Balanc.",interval:10000,unit:"km",lastDone:"",lastKm:"",notes:""},
+  ]}],
+  home:{tasks:[
+    {id:1,name:"Limpeza Caixa d'Água",interval:6,unit:"meses",lastDone:"",notes:""},
+    {id:2,name:"Limpeza Caixa de Gordura",interval:3,unit:"meses",lastDone:"",notes:""},
+    {id:3,name:"Troca Filtro de Água",interval:6,unit:"meses",lastDone:"",notes:""},
+    {id:4,name:"Dedetização",interval:12,unit:"meses",lastDone:"",notes:""},
+    {id:5,name:"Limpeza Ar-Condicionado",interval:6,unit:"meses",lastDone:"",notes:""},
+    {id:6,name:"Revisão Elétrica",interval:24,unit:"meses",lastDone:"",notes:""},
+    {id:7,name:"Limpeza Calhas",interval:12,unit:"meses",lastDone:"",notes:""},
+  ]},
+  history:[],bills:[]
+};
+
+function load(){try{const s=localStorage.getItem("mnt_pro_v3");return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT))}catch{return JSON.parse(JSON.stringify(DEFAULT))}}
+function save(){try{localStorage.setItem("mnt_pro_v3",JSON.stringify(D))}catch{}}
+let D=load(), currentTab="dashboard";
+
+// ── UTILS ─────────────────────────────────────────────────
+function daysAgo(d){if(!d)return null;return Math.floor((Date.now()-new Date(d))/86400000)}
+function status(t){
+  if(!t.lastDone)return"none";
+  const d=daysAgo(t.lastDone);
+  if(t.unit==="meses"){const p=(d/30)/t.interval;if(p>=1)return"over";if(p>=0.8)return"warn";}
+  return"ok";
+}
+function badge(t){
+  const s=status(t);
+  if(s==="none")return'<span class="badge badge-none">Não registrado</span>';
+  const d=daysAgo(t.lastDone);
+  const l=d===0?"Hoje":d===1?"Ontem":d+"d atrás";
+  if(s==="over")return`<span class="badge badge-over">Atrasado · ${l}</span>`;
+  if(s==="warn")return`<span class="badge badge-warn">Atenção · ${l}</span>`;
+  return`<span class="badge badge-ok">Em dia · ${l}</span>`;
+}
+function fmt(s){if(!s)return"";const[y,m,d]=s.split("-");return`${d}/${m}/${y}`}
+function allTasks(){
+  return[
+    ...D.home.tasks.map(t=>({...t,cat:"Casa 🏠",sec:"home"})),
+    ...D.vehicles.flatMap(v=>v.tasks.map(t=>({...t,cat:v.name+" "+v.icon,sec:"vehicle",vid:v.id})))
+  ];
+}
+function today(){return new Date().toISOString().split("T")[0]}
+
+// ── RENDER ────────────────────────────────────────────────
+function render(){
+  const el=document.getElementById("appContent");
+  if(currentTab==="dashboard")el.innerHTML=renderDash();
+  else if(currentTab==="vehicles")el.innerHTML=renderVehicles();
+  else if(currentTab==="home")el.innerHTML=renderHome();
+  else if(currentTab==="bills")el.innerHTML=renderBills();
+  else if(currentTab==="history")el.innerHTML=renderHistory();
+  bindEvents();
+  updatePill();
+}
+
+function updatePill(){
+  const n=allTasks().filter(t=>status(t)==="over"||status(t)==="warn").length;
+  const p=document.getElementById("alertPill");
+  if(!p)return;
+  if(n>0){p.style.display="";p.textContent="⚠️ "+n+" pendência"+(n>1?"s":"")}else p.style.display="none";
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function renderDash(){
+  const all=allTasks();
+  const over=all.filter(t=>status(t)==="over");
+  const warn=all.filter(t=>status(t)==="warn");
+  const none=all.filter(t=>!t.lastDone);
+  const ok=all.filter(t=>t.lastDone&&status(t)==="ok");
+  const att=[...over,...warn];
+  return`
+    <div class="section-title">Painel Geral</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value" style="color:#ef4444">🔴 ${over.length}</div><div class="stat-label">Atrasados</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#f59e0b">🟡 ${warn.length}</div><div class="stat-label">Atenção</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#64748b">⚪ ${none.length}</div><div class="stat-label">Não registrados</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#22c55e">🟢 ${ok.length}</div><div class="stat-label">Em dia</div></div>
+    </div>
+    <div class="section-sub">Itens que precisam de atenção</div>
+    ${att.length===0?'<div class="empty">✅ Tudo em dia!<br><small>Nenhuma manutenção pendente.</small></div>':
+      att.map(t=>`<div class="task-item" style="margin-bottom:8px;border:1px solid ${status(t)==='over'?'#ef444444':'#f59e0b44'}">
+        <div class="task-info"><div class="task-name">${t.name}</div><div class="task-sub">${t.cat}</div></div>
+        ${badge(t)}
+      </div>`).join("")}`;
+}
+
+// ── VEHICLES ──────────────────────────────────────────────
+function renderVehicles(){
+  return`
+    <div class="row"><div class="section-title" style="margin:0">Meus Veículos</div>
+    <button class="btn-primary" id="btnAddVehicle">+ Novo</button></div>
+    ${D.vehicles.map(v=>`
+      <div class="card">
+        <div class="card-header"><span style="font-size:26px">${v.icon}</span>
+          <div><div style="font-weight:700;font-size:16px">${v.name}</div><div style="color:#64748b;font-size:13px">${v.model}</div></div>
+        </div>
+        <div class="card-body">
+          ${v.tasks.map(t=>`
+            <div class="task-item">
+              <div class="task-info">
+                <div class="task-name">${t.name}</div>
+                <div class="task-sub">A cada ${t.interval} ${t.unit}${t.lastKm?" · Último: "+t.lastKm+" km":""}</div>
+              </div>
+              <div class="task-actions">${badge(t)}
+                <button class="btn-small log-task" data-sec="vehicle" data-vid="${v.id}" data-tid="${t.id}" data-name="${t.name}">Registrar</button>
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>`).join("")}`;
+}
+
+// ── HOME ──────────────────────────────────────────────────
+function renderHome(){
+  return`
+    <div class="section-title">🏠 Manutenção da Casa</div>
+    <div class="card"><div class="card-body">
+      ${D.home.tasks.map(t=>`
+        <div class="task-item">
+          <div class="task-info">
+            <div class="task-name">${t.name}</div>
+            <div class="task-sub">A cada ${t.interval} ${t.unit}</div>
+            ${t.notes?`<div class="task-sub" style="font-style:italic">${t.notes}</div>`:""}
+          </div>
+          <div class="task-actions">${badge(t)}
+            <button class="btn-small log-task" data-sec="home" data-vid="" data-tid="${t.id}" data-name="${t.name}">Registrar</button>
+          </div>
+        </div>`).join("")}
+    </div></div>`;
+}
+
+// ── BILLS ─────────────────────────────────────────────────
+function renderBills(){
+  const unpaid=D.bills.filter(b=>!b.paid);
+  const paid=D.bills.filter(b=>b.paid);
+  const total=unpaid.reduce((s,b)=>s+parseFloat(b.value||0),0);
+  const billHtml=b=>`
+    <div class="bill-item ${b.paid?"paid":""}">
+      <input type="checkbox" class="toggle-bill" data-id="${b.id}" ${b.paid?"checked":""}>
+      <div class="bill-info">
+        <div class="bill-name ${b.paid?"paid":""}">${b.name}</div>
+        <div class="bill-sub">${b.dueDate?"Vence: "+fmt(b.dueDate):""}${b.category?" · "+b.category:""}</div>
+      </div>
+      ${b.value?`<div class="bill-value ${b.paid?"paid":""}">R$ ${parseFloat(b.value).toFixed(2)}</div>`:""}
+      <button class="del-bill" data-id="${b.id}" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:18px;padding:0 2px">🗑️</button>
+    </div>`;
+  return`
+    <div class="row"><div class="section-title" style="margin:0">💰 Contas & Despesas</div>
+    <button class="btn-primary" id="btnAddBill">+ Nova</button></div>
+    ${D.bills.length===0?'<div class="empty">Nenhuma conta registrada.<br><small>Clique em "+ Nova" para começar.</small></div>':`
+      ${unpaid.length>0?`<div class="section-sub" style="margin-top:0">Em aberto</div>${unpaid.map(billHtml).join("")}`:""}
+      ${paid.length>0?`<div class="section-sub">Pagas</div>${paid.map(billHtml).join("")}`:""}
+      <div class="divider"></div>
+      <div class="total-row"><span style="color:#64748b;font-weight:600">Total em aberto</span>
+      <span style="font-weight:700;font-size:16px;color:#6c63ff">R$ ${total.toFixed(2)}</span></div>`}`;
+}
+
+// ── HISTORY ───────────────────────────────────────────────
+function renderHistory(){
+  return`
+    <div class="section-title">📋 Histórico</div>
+    ${D.history.length===0?'<div class="empty">Nenhuma manutenção registrada ainda.<br><small>Registre uma manutenção para ver o histórico.</small></div>':
+      D.history.map(h=>`
+        <div class="hist-item">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:600;font-size:14px">${h.task}</div>
+            ${h.cost?`<div style="font-weight:700;color:#f59e0b">R$ ${parseFloat(h.cost).toFixed(2)}</div>`:""}
+          </div>
+          <div style="color:#64748b;font-size:12px;margin-top:3px">${h.category} · ${fmt(h.date)}</div>
+          ${h.notes?`<div style="color:#64748b;font-size:12px;font-style:italic;margin-top:3px">${h.notes}</div>`:""}
+        </div>`).join("")}`;
+}
+
+// ── BIND EVENTS ───────────────────────────────────────────
+function bindEvents(){
+  // Nav
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    btn.addEventListener("click",function(){
+      document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+      this.classList.add("active");
+      currentTab=this.dataset.tab;
+      render();
+    });
+  });
+  // Log task buttons
+  document.querySelectorAll(".log-task").forEach(btn=>{
+    btn.addEventListener("click",function(){
+      openLogModal(this.dataset.sec, this.dataset.vid, parseInt(this.dataset.tid), this.dataset.name);
+    });
+  });
+  // Add vehicle
+  const bav=document.getElementById("btnAddVehicle");
+  if(bav)bav.addEventListener("click",openAddVehicleModal);
+  // Add bill
+  const bab=document.getElementById("btnAddBill");
+  if(bab)bab.addEventListener("click",openAddBillModal);
+  // Toggle bill
+  document.querySelectorAll(".toggle-bill").forEach(cb=>{
+    cb.addEventListener("change",function(){
+      const b=D.bills.find(b=>b.id===parseInt(this.dataset.id));
+      if(b)b.paid=!b.paid;
+      save();render();
+    });
+  });
+  // Delete bill
+  document.querySelectorAll(".del-bill").forEach(btn=>{
+    btn.addEventListener("click",function(){
+      if(!confirm("Remover esta conta?"))return;
+      D.bills=D.bills.filter(b=>b.id!==parseInt(this.dataset.id));
+      save();render();
+    });
+  });
+}
+
+// ── MODALS ────────────────────────────────────────────────
+function closeModal(){document.getElementById("modalContainer").innerHTML=""}
+
+function openLogModal(sec, vid, tid, name){
+  const isVehicle=sec==="vehicle";
+  const mc=document.getElementById("modalContainer");
+  mc.innerHTML=`
+    <div class="modal-overlay" id="mOverlay">
+      <div class="modal-box">
+        <div class="modal-title">✅ Registrar: ${name}</div>
+        <div class="field"><label>Data</label><input type="date" id="fDate" value="${today()}"></div>
+        ${isVehicle?'<div class="field"><label>Quilometragem (km)</label><input type="number" id="fKm" placeholder="Ex: 45000"></div>':""}
+        <div class="field"><label>Custo (R$)</label><input type="number" id="fCost" placeholder="Ex: 150.00" step="0.01"></div>
+        <div class="field"><label>Observações</label><textarea id="fNotes" placeholder="Ex: Óleo 5W30 sintético..."></textarea></div>
+        <div class="btn-row">
+          <button class="btn-outline" style="flex:1" id="mCancel">Cancelar</button>
+          <button class="btn-primary" style="flex:1" id="mSave">Salvar</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("mOverlay").addEventListener("click",function(e){if(e.target===this)closeModal()});
+  document.getElementById("mCancel").addEventListener("click",closeModal);
+  document.getElementById("mSave").addEventListener("click",function(){
+    const date=document.getElementById("fDate").value;
+    if(!date){alert("Informe a data!");return}
+    const km=document.getElementById("fKm")?document.getElementById("fKm").value:"";
+    const cost=document.getElementById("fCost").value;
+    const notes=document.getElementById("fNotes").value;
+    let taskName="";
+    if(sec==="home"){
+      const t=D.home.tasks.find(t=>t.id===tid);
+      if(t){t.lastDone=date;t.notes=notes;taskName=t.name;}
+    } else {
+      const v=D.vehicles.find(v=>v.id===parseInt(vid));
+      if(v){const t=v.tasks.find(t=>t.id===tid);if(t){t.lastDone=date;if(km)t.lastKm=km;t.notes=notes;taskName=t.name;}}
+    }
+    D.history.unshift({id:Date.now(),date,task:taskName,
+      category:sec==="home"?"Casa":(D.vehicles.find(v=>v.id===parseInt(vid))?.name||""),
+      notes,cost});
+    save();closeModal();render();
+  });
+}
+
+function openAddVehicleModal(){
+  const mc=document.getElementById("modalContainer");
+  mc.innerHTML=`
+    <div class="modal-overlay" id="mOverlay">
+      <div class="modal-box">
+        <div class="modal-title">🚗 Novo Veículo</div>
+        <div class="field"><label>Nome</label><input type="text" id="fVName" placeholder="Ex: Meu Carro"></div>
+        <div class="field"><label>Modelo / Ano</label><input type="text" id="fVModel" placeholder="Ex: Fiat Strada 2022"></div>
+        <div class="field"><label>Ícone</label>
+          <div class="icon-grid" id="iconGrid">
+            ${["🚗","🚕","🚙","🏍️","🚐","🚛","🚜","🛻"].map((ic,i)=>`<button class="icon-btn${i===0?" sel":""}" data-icon="${ic}">${ic}</button>`).join("")}
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-outline" style="flex:1" id="mCancel">Cancelar</button>
+          <button class="btn-primary" style="flex:1" id="mSaveV">Adicionar</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("mOverlay").addEventListener("click",function(e){if(e.target===this)closeModal()});
+  document.getElementById("mCancel").addEventListener("click",closeModal);
+  document.querySelectorAll(".icon-btn").forEach(btn=>{
+    btn.addEventListener("click",function(){
+      document.querySelectorAll(".icon-btn").forEach(b=>b.classList.remove("sel"));
+      this.classList.add("sel");
+    });
+  });
+  document.getElementById("mSaveV").addEventListener("click",function(){
+    const name=document.getElementById("fVName").value||"Novo Veículo";
+    const model=document.getElementById("fVModel").value||"";
+    const icon=(document.querySelector(".icon-btn.sel")||{}).dataset.icon||"🚗";
+    const tasks=JSON.parse(JSON.stringify(DEFAULT.vehicles[0].tasks));
+    D.vehicles.push({id:Date.now(),name,model,icon,tasks});
+    save();closeModal();render();
+  });
+}
+
+function openAddBillModal(){
+  const mc=document.getElementById("modalContainer");
+  mc.innerHTML=`
+    <div class="modal-overlay" id="mOverlay">
+      <div class="modal-box">
+        <div class="modal-title">💰 Nova Conta</div>
+        <div class="field"><label>Nome da Conta</label><input type="text" id="fBName" placeholder="Ex: Troca de Óleo"></div>
+        <div class="field"><label>Valor (R$)</label><input type="number" id="fBValue" placeholder="Ex: 200.00" step="0.01"></div>
+        <div class="field"><label>Vencimento</label><input type="date" id="fBDue"></div>
+        <div class="field"><label>Categoria</label>
+          <select id="fBCat">
+            <option value="">Selecione...</option>
+            <option>Veículo</option><option>Casa</option><option>Seguro</option>
+            <option>IPTU / IPVA</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button class="btn-outline" style="flex:1" id="mCancel">Cancelar</button>
+          <button class="btn-primary" style="flex:1" id="mSaveB">Salvar</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("mOverlay").addEventListener("click",function(e){if(e.target===this)closeModal()});
+  document.getElementById("mCancel").addEventListener("click",closeModal);
+  document.getElementById("mSaveB").addEventListener("click",function(){
+    const name=document.getElementById("fBName").value;
+    if(!name){alert("Informe o nome da conta!");return}
+    D.bills.push({id:Date.now(),name,paid:false,
+      value:document.getElementById("fBValue").value,
+      dueDate:document.getElementById("fBDue").value,
+      category:document.getElementById("fBCat").value});
+    save();closeModal();render();
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────────
+render();
+</script>
+
+
+</body></html>
